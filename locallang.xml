@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for extension 'ratings'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="pi1_title">Ratings</label>
+			<label index="pi1_plus_wiz_description">Modern AJAX-based rating system</label>
+			<label index="api_votes_str">%d vote(s)</label>
+			<label index="api_rating_str">Rating:</label>
+			<label index="api_your_vote">Your vote:</label>
+		</languageKey>
+	</data>
+</T3locallang>

@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>FAQ Example Template</title>
+<!-- ###HEADER_PARTS### -->
+<link rel="stylesheet" href="###SITE_REL_PATH###res/styles.css" />
+<script type="text/javascript" src="###SITE_REL_PATH###res/rating.js"></script>
+<!-- ###HEADER_PARTS### -->
+</head>
+
+<body>
+
+<h3>TEMPLATE_RATING</h3>
+<em>This is the template for rating display and update (using Prototype's Ajax)</em>
+
+<!-- ###TEMPLATE_RATING### end -->
+<div class="tx-irfaq-rating">
+	<div>
+		<div class="tx-irfaq-rating-prefix">
+			###TEXT_RATING###
+		</div>
+		<div class="tx-irfaq-bar">
+			<div class="tx-irfaq-rating-bar" id="tx-irfaq-rating-bar-###REF###" style="width: ###PERCENT_INT###%;">
+			</div>
+		</div>
+	</div>
+	<div class="tx-irfaq-cleaner"></div>
+	<div id="tx-irfaq-rating-###UID###">
+		###VOTES_STR###.
+		<span id="tx-irfaq-select-###UID###">
+			###TEXT_YOUR_VOTE###
+			<select onchange="tx_irfaq_recordVote(this,###MIN_RATING###,###MAX_RATING###)">
+				<option value=""></option>
+				<!-- ###VOTE_SUB### -->
+				<option value="index.php?eID=irfaq&amp;cmd=vote&amp;rating=###VOTE###&amp;ref=###REF###&amp;pid=###PID###&amp;chk=###CHECK###">###VOTE###</option>
+				<!-- ###VOTE_SUB### -->
+			</select>
+		</span>
+	</div>
+</div>
+<!-- ###TEMPLATE_RATING### end -->
+
+</body>
+</html>

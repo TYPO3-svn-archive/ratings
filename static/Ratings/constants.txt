@@ -1,0 +1,14 @@
+# cat=plugin.tx_ratings_pi1/setup; type=int+; label=Storage page id;UID of the page where rating records will be stored
+plugin.tx_ratings_pi1.storagePid = 0
+# cat=plugin.tx_ratings_pi1/setup; type=options[Text=0,Image=1]; label=Display mode
+plugin.tx_ratings_pi1.displayType = 1
+# cat=plugin.tx_ratings_pi1/setup; type=int; label=Minimum rating value;Warning: this value must not be changed after ratings start working or results will be incorrect!
+plugin.tx_ratings_pi1.minValue = 0
+# cat=plugin.tx_ratings_pi1/setup; type=int; label=Minimum rating value;Warning: this value must not be changed after ratings start working or results will be incorrect! You may also need to change CSS styles to display ratings properly
+plugin.tx_ratings_pi1.maxValue = 5
+# cat=plugin.tx_ratings_pi1/file; type=file[htm,html,tpl,tmpl]; label=Template file
+plugin.tx_ratings_pi1.templateFile = EXT:ratings/res/template.html
+# cat=plugin.tx_ratings_pi1/file; type=file[gif,jpg,jpeg,png]; label=Background image for rating view
+plugin.tx_ratings_pi1.bgImageFile = EXT:ratings/res/grey_star.gif
+# cat=plugin.tx_ratings_pi1/file; type=file[gif,jpg,jpeg,png]; label=Foreground image for rating view
+plugin.tx_ratings_pi1.fgImageFile = EXT:ratings/res/orange_star.gif
