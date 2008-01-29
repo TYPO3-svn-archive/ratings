@@ -13,7 +13,7 @@ CREATE TABLE tx_ratings_data (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
-	KEY reference (reference)
+	KEY reference (reference(16))
 );
 
 #
@@ -30,5 +30,5 @@ CREATE TABLE tx_ratings_iplog (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
-	KEY reference (reference)
+	KEY reference (reference(16))
 );

@@ -27,6 +27,7 @@ require_once(PATH_tslib.'class.tslib_pibase.php');
 define('TX_RATINGS_MIN', 0);
 define('TX_RATINGS_MAX', 100);
 
+require_once(t3lib_extMgm::extPath('ratings', 'class.tx_ratings_api.php'));
 
 /**
  * Plugin 'Ratings' for the 'ratings' extension.
@@ -51,16 +52,15 @@ class tx_ratings_pi1 extends tslib_pibase {
 	function main($content, $conf) {
 		$this->conf = $conf;
 		$this->pi_setPiVarDefaults();
-		$this->pi_loadLL();
+//		$this->pi_loadLL();
 
-		$content = '';
+		$api = t3lib_div::makeInstance('tx_ratings_api');
+		/* @var $api tx_ratings_api */
+		$content = $api->getRatingDisplay('pages_' . $GLOBALS['TSFE']->id, $conf);
 
 		return $this->pi_wrapInBaseClass($content);
 	}
-
 }
-
-
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/ratings/pi1/class.tx_ratings_pi1.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/ratings/pi1/class.tx_ratings_pi1.php']);

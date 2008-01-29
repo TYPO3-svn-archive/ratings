@@ -32,7 +32,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'version' => '0.1.0',
 	'constraints' => array(
 		'depends' => array(
-			'PHP' => '5.1.0-100.0.0',
+			'php' => '5.1.0-100.0.0',
 		),
 		'conflicts' => array(
 		),

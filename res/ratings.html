@@ -20,25 +20,27 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Morbi purus. Nullam id
 <!-- ###TEMPLATE_RATING### end -->
 <div class="tx-ratings" id="tx-ratings-###REF###">
 	<div class="tx-rating-display-wrap" id="tx-ratings-wait-###REF###">
-		<img src="working.gif" width="16" height="16" alt="" />
+		<img src="###SITE_REL_PATH###res/working.gif" width="16" height="16" alt="" />
 		###TEXT_SUBMITTING###
 	</div>
-	<div class="tx-ratings-display" id="tx-ratings-display-###REF###">
-		<div class="tx-ratings-grey-bar"></div>
-		<div class="tx-ratings-gold-bar" style="width: ###BAR_WIDTH###px"></div>
-		<div class="tx-ratings-vote-bar">
-			<div>
-				<!-- ###VOTE_SUB### -->
-				<a href="javascript:void(0)" onclick="submitRating('###REF###', ###PID###, ###VALUE###, '###CHECK###');return false"></a>
-				<!-- ###VOTE_SUB### -->
+	<div id="tx-ratings-display-###REF###">
+		<div class="tx-ratings-display">
+			<div class="tx-ratings-grey-bar"></div>
+			<div class="tx-ratings-gold-bar" style="width: ###BAR_WIDTH###px"></div>
+			<div class="tx-ratings-vote-bar">
+				<div>
+					<!-- ###VOTE_SUB### -->
+					<a href="javascript:void(0)" onclick="submitRating('###REF###', ###PID###, ###VALUE###, '###CHECK###');return false"></a>
+					<!-- ###VOTE_SUB### -->
+				</div>
+				<div class="tx-ratings-cleaner"></div>
 			</div>
-			<div class="tx-ratings-cleaner"></div>
 		</div>
-	</div>
-	<div class="tx-ratings-text">
-		###RATING###.
-		<br />
-		###RATING_TIP###.
+		<div class="tx-ratings-text">
+			###RATING###.
+			<br />
+			###TEXT_RATING_TIP###.
+		</div>
 	</div>
 </div>
 
@@ -56,7 +58,7 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Morbi purus. Nullam id
 	<div class="tx-ratings-text">
 		###RATING###.
 		<br />
-		###ALREADY_RATED###.
+		###TEXT_ALREADY_RATED###.
 	</div>
 </div>
 

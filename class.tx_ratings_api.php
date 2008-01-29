@@ -97,7 +97,7 @@ class tx_ratings_api {
 		}
 
 		$this->addHeaderParts($template);
-		return $this->generateRatingContent($template, $conf);
+		return $this->generateRatingContent($ref, $template, $conf);
 	}
 
 	/**
@@ -138,7 +138,7 @@ class tx_ratings_api {
 		$key = 'tx_ratings_' . md5($subPart);
 		if (!isset($GLOBALS['TSFE']->additionalHeaderData[$key])) {
 			$GLOBALS['TSFE']->additionalHeaderData[$key] =
-				$this->cObj->substituteMarker($template, '###SITE_REL_PATH###', t3lib_extMgm::siteRelPath('ratings'));
+				$this->cObj->substituteMarker($subPart, '###SITE_REL_PATH###', t3lib_extMgm::siteRelPath('ratings'));
 		}
 	}
 
@@ -150,7 +150,7 @@ class tx_ratings_api {
 	 * @return	int
 	 */
 	protected function getBarWidth($rating, $conf) {
-		return intval($conf['ratingImageWidth']*$conf['maxRating']*$rating/($conf['maxRating'] - $conf['minRating']));
+		return intval($conf['ratingImageWidth']*$conf['maxValue']*$rating/($conf['maxValue'] - $conf['minValue']));
 	}
 
 	/**
@@ -179,36 +179,39 @@ class tx_ratings_api {
 		$language = t3lib_div::makeInstance('language');
 		/* @var $language language */
 		$rating = $this->getRatingInfo($ref, $conf);
-		$rating_value = (($rating['rating']/$rating['vote_count']) - $conf['minRating'])/($conf['maxRating'] - $conf['minRating']);
 		if ($rating['vote_count'] > 0) {
-			$rating_str = sprintf($language->sL('LLL:EXT:ratings/locallang.xml:api_rating'), $rating_value, $conf['maxRating'], $rating['vote_count']);
+			$rating_value = (($rating['rating']/$rating['vote_count']) - $conf['minValue'])/($conf['maxValue'] - $conf['minValue']);
+			$rating_str = sprintf($language->sL('LLL:EXT:ratings/locallang.xml:api_rating'), $rating_value, $conf['maxValue'], $rating['vote_count']);
 		}
 		else {
 			$rating_str = $language->sL('LLL:EXT:ratings/locallang.xml:api_not_rated');
 		}
+		$siteRelPath = t3lib_extMgm::siteRelPath('ratings');
 		$markers = array(
 			'###PID###' => $GLOBALS['TSFE']->id,
 			'###REF###' => htmlspecialchars($ref),
 			'###TEXT_SUBMITTING###' => $language->sL('LLL:EXT:ratings/locallang.xml:api_submitting'),
-			'###ALREADY_RATED###' => $language->sL('LLL:EXT:ratings/locallang.xml:api_already_rated'),
+			'###TEXT_ALREADY_RATED###' => $language->sL('LLL:EXT:ratings/locallang.xml:api_already_rated'),
 			'###BAR_WIDTH###' => $this->getBarWidth($rating_value, $conf),
 			'###RATING###' => $rating_str,
 			'###TEXT_RATING_TIP###' => $language->sL('LLL:EXT:ratings/locallang.xml:api_tip'),
+			'###SITE_REL_PATH###' => $siteRelPath,
 		);
 		if ($this->isVoted($ref)) {
-			$subTemplate = $this->cObj->getSubpart('###TEMPLATE_RATING_STATIC###');
+			$subTemplate = $this->cObj->getSubpart($template, '###TEMPLATE_RATING_STATIC###');
 			$subParts = array();
 		}
 		else {
-			$subTemplate = $this->cObj->getSubpart('###TEMPLATE_RATING###');
+			$subTemplate = $this->cObj->getSubpart($template, '###TEMPLATE_RATING###');
 			$voteSub = $this->cObj->getSubpart($subTemplate, '###VOTE_SUB###');
 			$options = '';
 			for ($i = $conf['minValue']; $i <= $conf['maxValue']; $i++) {
 				$options .= $this->cObj->substituteMarkerArray($voteSub, array(
-					'###VOTE###' => $i,
+					'###VALUE###' => $i,
 					'###REF###' => $ref,
 					'###PID###' => $GLOBALS['TSFE']->id,
-					'###CHECK###' => md5($ref . $i . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])
+					'###CHECK###' => md5($ref . $i . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']),
+					'###SITE_REL_PATH###' => $siteRelPath,
 				));
 			}
 			$subParts = array('###VOTE_SUB###' => $options);

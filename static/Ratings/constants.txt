@@ -5,6 +5,6 @@ plugin.tx_ratings_pi1.minValue = 1
 # cat=plugin.tx_ratings_pi1/setup; type=int; label=Minimum rating value;Warning: this value must not be changed after ratings start working or results will be incorrect! You may also need to change CSS styles to display ratings properly
 plugin.tx_ratings_pi1.maxValue = 5
 # cat=plugin.tx_ratings_pi1/file; type=file[htm,html,tpl,tmpl]; label=Template file
-plugin.tx_ratings_pi1.templateFile = EXT:ratings/res/template.html
+plugin.tx_ratings_pi1.templateFile = EXT:ratings/res/ratings.html
 # cat=plugin.tx_ratings_pi1/file; type=int+; label=Rating image width
 plugin.tx_ratings_pi1.ratingImageWidth = 11
