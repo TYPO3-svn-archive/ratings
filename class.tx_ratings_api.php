@@ -100,6 +100,32 @@ class tx_ratings_api {
 		return $this->generateRatingContent($template, $conf);
 	}
 
+	/**
+	 * Retrieves current IP address
+	 *
+	 * @return	string	Current IP address
+	 */
+	protected function getCurrentIp() {
+		if (preg_match('/^\d{2,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/', $_SERVER['HTTP_X_FORWARDED_FOR'])) {
+			return $_SERVER['HTTP_X_FORWARDED_FOR'];
+		}
+		return $_SERVER['REMOTE_ADDR'];
+	}
+
+	/**
+	 * Checks if item was already voted by current user
+	 *
+	 * @param	string	$ref	Reference
+	 * @return	boolean	true if item was voted
+	 */
+	protected function isVoted($ref) {
+		list($rec) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('COUNT(*) AS t',
+					'tx_ratings_iplog',
+					'reference=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($ref, 'tx_ratings_iplog') .
+					' AND ip='. $GLOBALS['TYPO3_DB']->fullQuoteStr($this->getCurrentIp(), 'tx_ratings_iplog') .
+					$this->cObj->enableFields('tx_ratings_iplog'));
+		return ($rec['t'] > 0);
+	}
 
 	/**
 	 * Adds header parts from the template to the TSFE.
@@ -116,6 +142,16 @@ class tx_ratings_api {
 		}
 	}
 
+	/**
+	 * Calculates image bar width
+	 *
+	 * @param	int	$rating	Rating value
+	 * @param	array	$conf	Configuration
+	 * @return	int
+	 */
+	protected function getBarWidth($rating, $conf) {
+		return intval($conf['ratingImageWidth']*$conf['maxRating']*$rating/($conf['maxRating'] - $conf['minRating']));
+	}
 
 	/**
 	 * Fetches rating information for $ref
@@ -125,10 +161,10 @@ class tx_ratings_api {
 	 * @return	array	Array with two values: rating and count, which is calculated rating value and number of votes respectively
 	 */
 	protected function getRatingInfo($ref, array &$conf) {
-		list($rating) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('SUM(value)/COUNT(value) AS rating, COUNT(value) as count', 'tx_ratings_data',
-				'reference=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($ref, 'tx_ratings_data') .
-				$this->cObj->enableFields('tx_ratings_data'));
-		return $rating;
+		$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('rating,vote_count',
+					'tx_ratings_data',
+					'reference=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($ref, 'tx_ratings_data') . $this->cObj->enableFields('tx_ratings_data'));
+		return (count($recs) ? $recs[0] : array('rating' => 0, 'vote_count' => 0));
 	}
 
 	/**
@@ -143,34 +179,41 @@ class tx_ratings_api {
 		$language = t3lib_div::makeInstance('language');
 		/* @var $language language */
 		$rating = $this->getRatingInfo($ref, $conf);
+		$rating_value = (($rating['rating']/$rating['vote_count']) - $conf['minRating'])/($conf['maxRating'] - $conf['minRating']);
+		if ($rating['vote_count'] > 0) {
+			$rating_str = sprintf($language->sL('LLL:EXT:ratings/locallang.xml:api_rating'), $rating_value, $conf['maxRating'], $rating['vote_count']);
+		}
+		else {
+			$rating_str = $language->sL('LLL:EXT:ratings/locallang.xml:api_not_rated');
+		}
 		$markers = array(
-			'###MIN_RATING###' => $this->conf['minValue'],
-			'###MAX_RATING###' => $this->conf['maxValue'],
-			'###RATING###' => htmlspecialchars(sprintf($this->conf['numericFormat'], $this->getRatingValue($ref, $conf))),
-			'###VOTES###' => $rating['count'],
-			'###VOTES_STR###' => htmlspecialchars(sprintf($language->sL('LLL:EXT:ratings/locallang.xml:api_votes_str'), $rating['count'])),
-			'###TEXT_RATING###' => htmlspecialchars($this->pi_getLL('api_rating_str')),
-			'###TEXT_YOUR_VOTE###' => htmlspecialchars($this->pi_getLL('api_your_vote')),
-			'###PERCENT###' => $percent,
-			'###PERCENT_INT###' => intval($percent),
 			'###PID###' => $GLOBALS['TSFE']->id,
 			'###REF###' => htmlspecialchars($ref),
+			'###TEXT_SUBMITTING###' => $language->sL('LLL:EXT:ratings/locallang.xml:api_submitting'),
+			'###ALREADY_RATED###' => $language->sL('LLL:EXT:ratings/locallang.xml:api_already_rated'),
+			'###BAR_WIDTH###' => $this->getBarWidth($rating_value, $conf),
+			'###RATING###' => $rating_str,
+			'###TEXT_RATING_TIP###' => $language->sL('LLL:EXT:ratings/locallang.xml:api_tip'),
 		);
-		$subTemplate = $this->cObj->getSubpart('###TEMPLATE_RATING###');
-		$voteSub = $this->cObj->getSubpart($subTemplate, '###VOTE_SUB###');
-		$options = '';
-		for ($i = $conf['minValue']; $i <= $conf['maxValue']; $i++) {
-			$options .= $this->cObj->substituteMarkerArray($voteSub, array(
-				'###VOTE###' => $i,
-				'###REF###' => $ref,
-				'###PID###' => $GLOBALS['TSFE']->id,
-				'###CHECK###' => md5($ref . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])
-			));
+		if ($this->isVoted($ref)) {
+			$subTemplate = $this->cObj->getSubpart('###TEMPLATE_RATING_STATIC###');
+			$subParts = array();
 		}
-
-		return $this->cObj->substituteMarkerArrayCached($subTemplate, $markers, array(
-			'###VOTE_SUB###' => $options,
-		));
+		else {
+			$subTemplate = $this->cObj->getSubpart('###TEMPLATE_RATING###');
+			$voteSub = $this->cObj->getSubpart($subTemplate, '###VOTE_SUB###');
+			$options = '';
+			for ($i = $conf['minValue']; $i <= $conf['maxValue']; $i++) {
+				$options .= $this->cObj->substituteMarkerArray($voteSub, array(
+					'###VOTE###' => $i,
+					'###REF###' => $ref,
+					'###PID###' => $GLOBALS['TSFE']->id,
+					'###CHECK###' => md5($ref . $i . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])
+				));
+			}
+			$subParts = array('###VOTE_SUB###' => $options);
+		}
+		return $this->cObj->substituteMarkerArrayCached($subTemplate, $markers, $subParts);
 	}
 }
 

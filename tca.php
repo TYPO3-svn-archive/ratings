@@ -3,10 +3,6 @@ if (!defined ('TYPO3_MODE')) die('Access denied.');
 
 $TCA['tx_ratings_data'] = array (
 	'ctrl' => $TCA['tx_ratings_data']['ctrl'],
-//	'interface' => array (
-//		'showRecordFieldList' => 'reference,value'
-//	),
-//	'feInterface' => $TCA['tx_ratings_data']['feInterface'],
 	'columns' => array (
 		'reference' => array (
 			'exclude' => 1,
@@ -14,15 +10,31 @@ $TCA['tx_ratings_data'] = array (
 			'config' => array (
 				'type' => 'group',
 				'internal_type' => 'db',
-				'allowed' => 'NO_TABLE_NAME_AVAILABLE',
+				'allowed' => '*',
 				'size' => 1,
-				'minitems' => 0,
+				'minitems' => 1,
 				'maxitems' => 1,
 			)
 		),
-		'value' => array (
+		'rating' => array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:ratings/locallang_db.xml:tx_ratings_data.value',
+			'label' => 'LLL:EXT:ratings/locallang_db.xml:tx_ratings_data.rating',
+			'config' => array (
+				'type'     => 'input',
+				'size'     => '4',
+				'max'      => '4',
+				'eval'     => 'int',
+				'checkbox' => '0',
+				'range'    => array (
+					'upper' => '1000',
+					'lower' => '10'
+				),
+				'default' => 0
+			)
+		),
+		'vote_count' => array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:ratings/locallang_db.xml:tx_ratings_data.vote_count',
 			'config' => array (
 				'type'     => 'input',
 				'size'     => '4',
@@ -38,10 +50,56 @@ $TCA['tx_ratings_data'] = array (
 		),
 	),
 	'types' => array (
-		'0' => array('showitem' => 'reference;;;;1-1-1, value')
+		'0' => array('showitem' => 'reference;;;;1-1-1, rating, vote_count')
 	),
-	'palettes' => array (
-		'1' => array('showitem' => '')
-	)
+//	'palettes' => array (
+//		'1' => array('showitem' => '')
+//	)
 );
+
+$TCA['tx_ratings_iplog'] = array(
+	'ctrl' => $TCA['tx_ratings_iplog']['ctrl'],
+	'columns' => array (
+		'reference' => array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:ratings/locallang_db.xml:tx_ratings_iplog.reference',
+			'config' => array (
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => '*',
+				'size' => 1,
+				'minitems' => 1,
+				'maxitems' => 1,
+			)
+		),
+		'crdate' => array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:ratings/locallang_db.xml:tx_ratings_iplog.crdate',
+			'config' => array (
+				'type'     => 'input',
+				'size'     => '22',
+				'max'      => '16',
+				'eval'     => 'datetime',
+				'readOnly' => true,
+			)
+		),
+		'ip' => array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:ratings/locallang_db.xml:tx_ratings_iplog.ip',
+			'config' => array (
+				'type'     => 'input',
+				'size'     => '22',
+				'max'      => '16',
+				'eval'     => 'trim',
+			)
+		),
+	),
+	'types' => array (
+		'0' => array('showitem' => 'reference;;;;1-1-1, crdate, ip')
+	),
+//	'palettes' => array (
+//		'1' => array('showitem' => '')
+//	)
+);
+
 ?>

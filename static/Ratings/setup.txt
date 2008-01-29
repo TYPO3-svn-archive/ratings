@@ -3,10 +3,7 @@ plugin.tx_ratings_pi1 {
     userFunc = tx_ratings_pi1->main
     storagePid = {$plugin.tx_ratings_pi1.storagePid}
     templateFile = {$plugin.tx_ratings_pi1.templateFile}
-    displayType = {$plugin.tx_ratings_pi1.displayType}
     minValue = {$plugin.tx_ratings_pi1.minValue}
     maxValue = {$plugin.tx_ratings_pi1.maxValue}
-    bgImageFile = {$plugin.tx_ratings_pi1.bgImageFile}
-    fgImageFile = {$plugin.tx_ratings_pi1.fgImageFile}
-    numericFormat = %.2f
+    ratingImageWidth = {$plugin.tx_ratings_pi1.ratingImageWidth}
 }

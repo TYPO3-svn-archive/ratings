@@ -1,5 +1,6 @@
 <?php
 if (!defined ('TYPO3_MODE')) die('Access denied.');
+
 $TCA['tx_ratings_data'] = array (
 	'ctrl' => array (
 		'title'     => 'LLL:EXT:ratings/locallang_db.xml:tx_ratings_data',
@@ -10,6 +11,19 @@ $TCA['tx_ratings_data'] = array (
 		'default_sortby' => 'ORDER BY crdate DESC',
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
 		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'icon_tx_ratings_data.gif',
+	),
+);
+
+$TCA['tx_ratings_iplog'] = array (
+	'ctrl' => array (
+		'title'     => 'LLL:EXT:ratings/locallang_db.xml:tx_ratings_iplog',
+		'label'     => 'reference',
+		'tstamp'    => 'tstamp',
+		'crdate'    => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'default_sortby' => 'ORDER BY crdate DESC',
+		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
+		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'icon_tx_ratings_iplog.gif',
 	),
 );
 
