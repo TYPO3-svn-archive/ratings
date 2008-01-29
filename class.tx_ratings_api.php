@@ -27,7 +27,7 @@ require_once(t3lib_extMgm::extPath('lang', 'lang.php'));
 /**
  * This class contains API for ratings. There are two ways to use this API:
  * <ul>
- * <li>Call {@link getRatingValueForRef} to obtain rating value and process it yourself</li>
+ * <li>Call {@link getRatingValue} to obtain rating value and process it yourself</li>
  * <li>Call {@link getRatingDisplay} to format and display rating value along with a control to change rating</li>
  * </ul>
  *
@@ -59,7 +59,7 @@ class tx_ratings_api {
 	 * @param	array	$conf	Configuration array
 	 * @return	float	Rating value (from 0 to 100)
 	 */
-	public function getRatingValueForRef($ref, $conf = null) {
+	public function getRatingValue($ref, $conf = null) {
 		if (is_null($conf)) {
 			$conf = $this->getDefaultConfig();
 		}
@@ -146,7 +146,7 @@ class tx_ratings_api {
 		$markers = array(
 			'###MIN_RATING###' => $this->conf['minValue'],
 			'###MAX_RATING###' => $this->conf['maxValue'],
-			'###RATING###' => htmlspecialchars(sprintf($this->conf['numericFormat'], $this->getRatingValueForRef($ref, $conf))),
+			'###RATING###' => htmlspecialchars(sprintf($this->conf['numericFormat'], $this->getRatingValue($ref, $conf))),
 			'###VOTES###' => $rating['count'],
 			'###VOTES_STR###' => htmlspecialchars(sprintf($language->sL('LLL:EXT:ratings/locallang.xml:api_votes_str'), $rating['count'])),
 			'###TEXT_RATING###' => htmlspecialchars($this->pi_getLL('api_rating_str')),
