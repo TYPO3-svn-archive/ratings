@@ -11,6 +11,8 @@ $TCA['tx_ratings_data'] = array (
 		'default_sortby' => 'ORDER BY crdate DESC',
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
 		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'icon_tx_ratings_data.gif',
+		'hideTable'	=> true,
+		'readOnly'	=> true,
 	),
 );
 
@@ -24,6 +26,8 @@ $TCA['tx_ratings_iplog'] = array (
 		'default_sortby' => 'ORDER BY crdate DESC',
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
 		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'icon_tx_ratings_iplog.gif',
+		'hideTable'	=> true,
+		'readOnly'	=> true,
 	),
 );
 
