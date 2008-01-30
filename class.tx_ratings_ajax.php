@@ -35,6 +35,17 @@
 */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   64: class tx_ratings_ajax
+ *   75:     public function __construct()
+ *  118:     public function main()
+ *  130:     protected function updateRating()
+ *
+ * TOTAL FUNCTIONS: 3
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
 require_once(t3lib_extMgm::extPath('lang', 'lang.php'));
@@ -58,6 +69,8 @@ class tx_ratings_ajax {
 
 	/**
 	 * Initializes the class
+	 *
+	 * @return	void
 	 */
 	public function __construct() {
 		$data_str = t3lib_div::_GP('data');
@@ -115,10 +128,6 @@ class tx_ratings_ajax {
 	 * @return	void
 	 */
 	protected function updateRating() {
-		// Update in the database
-//		t3lib_div::loadTCA('tx_ratings_data');
-//		t3lib_div::loadTCA('tx_ratings_iplog');
-
 		$apiObj = t3lib_div::makeInstance('tx_ratings_api');
 		/* @var $apiObj tx_ratings_api */
 

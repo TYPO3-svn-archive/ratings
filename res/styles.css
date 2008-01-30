@@ -6,6 +6,6 @@
 			.tx-ratings-vote-bar DIV A { display: block; float: left; width: 11px; height: 12px; }
 				.tx-ratings-vote-bar DIV A:hover { background-image: url(rating_stars.gif); background-position: 0 -24px; }
 			.tx-ratings-cleaner { clear: left; }
-	.tx-ratings-text { color: #606060; font-size: 9px; font-family: Helvetica,Arial; }
+	.tx-ratings-text { color: #606060; font-size: 11px; font-family: Helvetica,Arial; }
 	.tx-rating-display-wrap { position: absolute; left: 0; top: 0; font-size: 12px; visibility: hidden; z-index: 1; }
 			.tx-rating-display-wrap IMG { float: left; margin-right: 5px; }

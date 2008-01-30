@@ -6,4 +6,5 @@ plugin.tx_ratings_pi1 {
     minValue = {$plugin.tx_ratings_pi1.minValue}
     maxValue = {$plugin.tx_ratings_pi1.maxValue}
     ratingImageWidth = {$plugin.tx_ratings_pi1.ratingImageWidth}
+    additionalCSS = {$plugin.tx_ratings_pi1.additionalCSS}
 }

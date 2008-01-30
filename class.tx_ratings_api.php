@@ -27,6 +27,29 @@ require_once(t3lib_extMgm::extPath('cms', 'tslib/class.tslib_content.php'));
 require_once(PATH_t3lib . 'class.t3lib_page.php');
 
 /**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   63: class tx_ratings_api
+ *   85:     public function __construct()
+ *   98:     public function getRatingValue($ref, $conf = null)
+ *  112:     public function getDefaultConfig()
+ *  123:     public function getRatingDisplay($ref, $conf = null)
+ *  150:     public function getCurrentIp()
+ *  164:     public function isVoted($ref, array &$conf)
+ *  184:     protected function addHeaderParts($ref, $template, $conf)
+ *  221:     protected function getBarWidth($rating, $conf)
+ *  232:     protected function getRatingInfo($ref, array &$conf)
+ *  248:     protected function generateRatingContent($ref, $template, array &$conf)
+ *  302:     public function enableFields($tableName)
+ *
+ * TOTAL FUNCTIONS: 11
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
+
+/**
  * This class contains API for ratings. There are two ways to use this API:
  * <ul>
  * <li>Call {@link getRatingValue} to obtain rating value and process it yourself</li>
@@ -56,6 +79,8 @@ class tx_ratings_api {
 
 	/**
 	 * Creates an instance of this class
+	 *
+	 * @return	void
 	 */
 	public function __construct() {
 		$this->cObj = t3lib_div::makeInstance('tslib_cObj');
@@ -66,9 +91,9 @@ class tx_ratings_api {
 	 * Fetches data and calculates rating value for $ref. Rating values are from
 	 * 0 to 100.
 	 *
-	 * @param	string	$ref	Reference to item in TYPO3 "datagroup" format (like tt_content_10)
-	 * @param	array	$conf	Configuration array
-	 * @return	float	Rating value (from 0 to 100)
+	 * @param	string		$ref	Reference to item in TYPO3 "datagroup" format (like tt_content_10)
+	 * @param	array		$conf	Configuration array
+	 * @return	float		Rating value (from 0 to 100)
 	 */
 	public function getRatingValue($ref, $conf = null) {
 		if (is_null($conf)) {
@@ -82,7 +107,7 @@ class tx_ratings_api {
 	 * Retrieves default configuration of ratings.
 	 * Uses plugin.tx_ratings_pi1 from page TypoScript template
 	 *
-	 * @return	array	TypoScript configuration for ratings
+	 * @return	array		TypoScript configuration for ratings
 	 */
 	public function getDefaultConfig() {
 		return $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_ratings_pi1.'];
@@ -91,9 +116,9 @@ class tx_ratings_api {
 	/**
 	 * Generates HTML code for displaying ratings.
 	 *
-	 * @param	string	$ref	Reference
-	 * @param	array	$conf	Configuration array
-	 * @return	string	HTML content
+	 * @param	string		$ref	Reference
+	 * @param	array		$conf	Configuration array
+	 * @return	string		HTML content
 	 */
 	public function getRatingDisplay($ref, $conf = null) {
 		if (is_null($conf)) {
@@ -120,7 +145,7 @@ class tx_ratings_api {
 	/**
 	 * Retrieves current IP address
 	 *
-	 * @return	string	Current IP address
+	 * @return	string		Current IP address
 	 */
 	public function getCurrentIp() {
 		if (preg_match('/^\d{2,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/', $_SERVER['HTTP_X_FORWARDED_FOR'])) {
@@ -132,9 +157,9 @@ class tx_ratings_api {
 	/**
 	 * Checks if item was already voted by current user
 	 *
-	 * @param	string	$ref	Reference
-	 * @param	array	$conf	Configuration
-	 * @return	boolean	true if item was voted
+	 * @param	string		$ref	Reference
+	 * @param	array		$conf	Configuration
+	 * @return	boolean		true if item was voted
 	 */
 	public function isVoted($ref, array &$conf) {
 
@@ -151,9 +176,10 @@ class tx_ratings_api {
 	 * Adds header parts from the template to the TSFE.
 	 * It fetches subpart identified by ###HEADER_PARTS### and replaces ###SITE_REL_PATH### with site-relative part to the extension.
 	 *
-	 * @param	string	$ref	Reference
-	 * @param	string	$subpart	Subpart from template to add.
-	 * @param	array	$conf	Configuration
+	 * @param	string		$ref	Reference
+	 * @param	string		$subpart	Subpart from template to add.
+	 * @param	array		$conf	Configuration
+	 * @return	void
 	 */
 	protected function addHeaderParts($ref, $template, $conf) {
 		$subPart = $this->cObj->getSubpart($template, '###HEADER_PARTS###');
@@ -188,8 +214,8 @@ class tx_ratings_api {
 	/**
 	 * Calculates image bar width
 	 *
-	 * @param	int	$rating	Rating value
-	 * @param	array	$conf	Configuration
+	 * @param	int		$rating	Rating value
+	 * @param	array		$conf	Configuration
 	 * @return	int
 	 */
 	protected function getBarWidth($rating, $conf) {
@@ -199,9 +225,9 @@ class tx_ratings_api {
 	/**
 	 * Fetches rating information for $ref
 	 *
-	 * @param	string	$ref	Reference in TYPO3 "datagroup" format (i.e. tt_content_10)
-	 * @param	array	$conf	Configuration array
-	 * @return	array	Array with two values: rating and count, which is calculated rating value and number of votes respectively
+	 * @param	string		$ref	Reference in TYPO3 "datagroup" format (i.e. tt_content_10)
+	 * @param	array		$conf	Configuration array
+	 * @return	array		Array with two values: rating and count, which is calculated rating value and number of votes respectively
 	 */
 	protected function getRatingInfo($ref, array &$conf) {
 		$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('rating,vote_count',
@@ -214,10 +240,10 @@ class tx_ratings_api {
 	/**
 	 * Generates rating content for given $ref using $template HTML template
 	 *
-	 * @param	string	$ref	Reference in TYPO3 "datagroup" format (i.e. tt_content_10)
-	 * @param	string	$template	HTML template to use
-	 * @param	array	$conf	Configuration array
-	 * @return	string	Generated content
+	 * @param	string		$ref	Reference in TYPO3 "datagroup" format (i.e. tt_content_10)
+	 * @param	string		$template	HTML template to use
+	 * @param	array		$conf	Configuration array
+	 * @return	string		Generated content
 	 */
 	protected function generateRatingContent($ref, $template, array &$conf) {
 		// Init language
@@ -270,8 +296,8 @@ class tx_ratings_api {
 	/**
 	 * Implements enableFields call that can be used from regular FE and eID
 	 *
-	 * @param unknown_type $tableName
-	 * @return unknown
+	 * @param	string		$tableName	Table name
+	 * @return	string		SQL
 	 */
 	public function enableFields($tableName) {
 		if ($GLOBALS['TSFE']) {
