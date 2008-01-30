@@ -14,7 +14,7 @@ CREATE TABLE tx_ratings_data (
 	PRIMARY KEY (uid),
 	KEY parent (pid),
 	KEY reference (reference(16))
-);
+) ENGINE = InnoDB;
 
 #
 # Table structure for table 'tx_ratings_iplog'
@@ -30,5 +30,5 @@ CREATE TABLE tx_ratings_iplog (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
-	KEY reference (reference(16))
-);
+	KEY ip_check (reference(16),ip)
+) ENGINE = InnoDB;

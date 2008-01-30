@@ -23,6 +23,8 @@
 ***************************************************************/
 
 require_once(t3lib_extMgm::extPath('lang', 'lang.php'));
+require_once(t3lib_extMgm::extPath('cms', 'tslib/class.tslib_content.php'));
+require_once(PATH_t3lib . 'class.t3lib_page.php');
 
 /**
  * This class contains API for ratings. There are two ways to use this API:
@@ -45,10 +47,19 @@ class tx_ratings_api {
 	protected $cObj;
 
 	/**
+	 * AJAX encoded data. This is created in {@link addHeaderData} and used in
+	 * {@link getRatingDisplay} to produce check value
+	 *
+	 * @var string
+	 */
+	protected $ajaxData;
+
+	/**
 	 * Creates an instance of this class
 	 */
 	public function __construct() {
 		$this->cObj = t3lib_div::makeInstance('tslib_cObj');
+		$this->cObj->start('', '');
 	}
 
 	/**
@@ -90,13 +101,19 @@ class tx_ratings_api {
 		}
 
 		// Get template
-		$template = $this->cObj->fileResource($conf['templateFile']);
+		if ($GLOBALS['TSFE']) {
+			// Normal call
+			$template = $this->cObj->fileResource($conf['templateFile']);
+			$this->addHeaderParts($ref, $template, $conf);
+		}
+		else {
+			// Called from ajax
+			$template = @file_get_contents(PATH_site . $conf['templateFile']);
+		}
 		if (!$template) {
 			t3lib_div::devLog('Unable to load template code from "' . $conf['templateFile'] . '"', 'ratings', 3);
 			return '';
 		}
-
-		$this->addHeaderParts($template);
 		return $this->generateRatingContent($ref, $template, $conf);
 	}
 
@@ -105,7 +122,7 @@ class tx_ratings_api {
 	 *
 	 * @return	string	Current IP address
 	 */
-	protected function getCurrentIp() {
+	public function getCurrentIp() {
 		if (preg_match('/^\d{2,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/', $_SERVER['HTTP_X_FORWARDED_FOR'])) {
 			return $_SERVER['HTTP_X_FORWARDED_FOR'];
 		}
@@ -116,14 +133,17 @@ class tx_ratings_api {
 	 * Checks if item was already voted by current user
 	 *
 	 * @param	string	$ref	Reference
+	 * @param	array	$conf	Configuration
 	 * @return	boolean	true if item was voted
 	 */
-	protected function isVoted($ref) {
+	public function isVoted($ref, array &$conf) {
+
 		list($rec) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('COUNT(*) AS t',
 					'tx_ratings_iplog',
-					'reference=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($ref, 'tx_ratings_iplog') .
+					'pid=' . intval($conf['storagePid']) .
+					' AND reference=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($ref, 'tx_ratings_iplog') .
 					' AND ip='. $GLOBALS['TYPO3_DB']->fullQuoteStr($this->getCurrentIp(), 'tx_ratings_iplog') .
-					$this->cObj->enableFields('tx_ratings_iplog'));
+					$this->enableFields('tx_ratings_iplog'));
 		return ($rec['t'] > 0);
 	}
 
@@ -131,14 +151,37 @@ class tx_ratings_api {
 	 * Adds header parts from the template to the TSFE.
 	 * It fetches subpart identified by ###HEADER_PARTS### and replaces ###SITE_REL_PATH### with site-relative part to the extension.
 	 *
+	 * @param	string	$ref	Reference
 	 * @param	string	$subpart	Subpart from template to add.
+	 * @param	array	$conf	Configuration
 	 */
-	protected function addHeaderParts($template) {
+	protected function addHeaderParts($ref, $template, $conf) {
 		$subPart = $this->cObj->getSubpart($template, '###HEADER_PARTS###');
 		$key = 'tx_ratings_' . md5($subPart);
 		if (!isset($GLOBALS['TSFE']->additionalHeaderData[$key])) {
+			if ($conf['additionalCSS']) {
+				$subSubPart = $this->cObj->getSubpart($template, '###ADDITIONAL_CSS###');
+				$subParts['###ADDITIONAL_CSS###'] = trim($this->cObj->substituteMarker($subSubPart,
+						'###CSS_FILE###', $GLOBALS['TSFE']->tmpl->getFileName($conf['additionalCSS'])));
+			}
+			else {
+				$subParts['###ADDITIONAL_CSS###'] = '';
+			}
+			$confCopy = $conf;
+			unset($confCopy['userFunc']);
+			$confCopy['templateFile'] = $GLOBALS['TSFE']->tmpl->getFileName($conf['templateFile']);
+			$data = serialize(array(
+				'pid' => $GLOBALS['TSFE']->id,
+				'conf' => $confCopy,
+				'lang' => $GLOBALS['TSFE']->lang,
+				'ref' => $ref,
+			));
+			$this->ajaxData = base64_encode($data);
 			$GLOBALS['TSFE']->additionalHeaderData[$key] =
-				$this->cObj->substituteMarker($subPart, '###SITE_REL_PATH###', t3lib_extMgm::siteRelPath('ratings'));
+				$this->cObj->substituteMarkerArrayCached($subPart, array(
+					'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('ratings'),
+					'###AJAX_DATA###' => $this->ajaxData,
+				), $subParts);
 		}
 	}
 
@@ -150,7 +193,7 @@ class tx_ratings_api {
 	 * @return	int
 	 */
 	protected function getBarWidth($rating, $conf) {
-		return intval($conf['ratingImageWidth']*$conf['maxValue']*$rating/($conf['maxValue'] - $conf['minValue']));
+		return intval($conf['ratingImageWidth']*$rating);
 	}
 
 	/**
@@ -163,7 +206,8 @@ class tx_ratings_api {
 	protected function getRatingInfo($ref, array &$conf) {
 		$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('rating,vote_count',
 					'tx_ratings_data',
-					'reference=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($ref, 'tx_ratings_data') . $this->cObj->enableFields('tx_ratings_data'));
+					'pid=' . intval($conf['storagePid']) .
+					' AND reference=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($ref, 'tx_ratings_data') . $this->enableFields('tx_ratings_data'));
 		return (count($recs) ? $recs[0] : array('rating' => 0, 'vote_count' => 0));
 	}
 
@@ -176,15 +220,37 @@ class tx_ratings_api {
 	 * @return	string	Generated content
 	 */
 	protected function generateRatingContent($ref, $template, array &$conf) {
+		// Init language
 		$language = t3lib_div::makeInstance('language');
 		/* @var $language language */
+		$language->init($GLOBALS['TSFE']->lang);
+
 		$rating = $this->getRatingInfo($ref, $conf);
 		if ($rating['vote_count'] > 0) {
-			$rating_value = (($rating['rating']/$rating['vote_count']) - $conf['minValue'])/($conf['maxValue'] - $conf['minValue']);
+			$rating_value = $rating['rating']/$rating['vote_count'];
 			$rating_str = sprintf($language->sL('LLL:EXT:ratings/locallang.xml:api_rating'), $rating_value, $conf['maxValue'], $rating['vote_count']);
 		}
 		else {
+			$rating_value = 0;
 			$rating_str = $language->sL('LLL:EXT:ratings/locallang.xml:api_not_rated');
+		}
+		if ($this->isVoted($ref, $conf)) {
+			$subTemplate = $this->cObj->getSubpart($template, '###TEMPLATE_RATING_STATIC###');
+			$links = '';
+		}
+		else {
+			$subTemplate = $this->cObj->getSubpart($template, '###TEMPLATE_RATING###');
+			$voteSub = $this->cObj->getSubpart($template, '###VOTE_LINK_SUB###');
+			$links = '';
+			for ($i = $conf['minValue']; $i <= $conf['maxValue']; $i++) {
+				$links .= $this->cObj->substituteMarkerArray($voteSub, array(
+					'###VALUE###' => $i,
+					'###REF###' => $ref,
+					'###PID###' => $GLOBALS['TSFE']->id,
+					'###CHECK###' => md5($i . $this->ajaxData . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']),
+					'###SITE_REL_PATH###' => $siteRelPath,
+				));
+			}
 		}
 		$siteRelPath = t3lib_extMgm::siteRelPath('ratings');
 		$markers = array(
@@ -196,27 +262,24 @@ class tx_ratings_api {
 			'###RATING###' => $rating_str,
 			'###TEXT_RATING_TIP###' => $language->sL('LLL:EXT:ratings/locallang.xml:api_tip'),
 			'###SITE_REL_PATH###' => $siteRelPath,
+			'###VOTE_LINKS###' => $links,
 		);
-		if ($this->isVoted($ref)) {
-			$subTemplate = $this->cObj->getSubpart($template, '###TEMPLATE_RATING_STATIC###');
-			$subParts = array();
+		return $this->cObj->substituteMarkerArray($subTemplate, $markers);
+	}
+
+	/**
+	 * Implements enableFields call that can be used from regular FE and eID
+	 *
+	 * @param unknown_type $tableName
+	 * @return unknown
+	 */
+	public function enableFields($tableName) {
+		if ($GLOBALS['TSFE']) {
+			return $this->cObj->enableFields($tableName);
 		}
-		else {
-			$subTemplate = $this->cObj->getSubpart($template, '###TEMPLATE_RATING###');
-			$voteSub = $this->cObj->getSubpart($subTemplate, '###VOTE_SUB###');
-			$options = '';
-			for ($i = $conf['minValue']; $i <= $conf['maxValue']; $i++) {
-				$options .= $this->cObj->substituteMarkerArray($voteSub, array(
-					'###VALUE###' => $i,
-					'###REF###' => $ref,
-					'###PID###' => $GLOBALS['TSFE']->id,
-					'###CHECK###' => md5($ref . $i . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']),
-					'###SITE_REL_PATH###' => $siteRelPath,
-				));
-			}
-			$subParts = array('###VOTE_SUB###' => $options);
-		}
-		return $this->cObj->substituteMarkerArrayCached($subTemplate, $markers, $subParts);
+		$sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
+		/* @var $sys_page t3lib_pageSelect */
+		return $sys_page->enableFields($tableName);
 	}
 }
 

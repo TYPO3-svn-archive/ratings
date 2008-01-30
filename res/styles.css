@@ -1,4 +1,4 @@
-.tx-ratings { position: relative; left: 0; top: 0; xmargin: 5px 5px; padding-top: 16px; margin: 5px 5px; }
+.tx-ratings { position: relative; left: 0; top: 0; padding-top: 16px; margin: 5px 5px; }
 	.tx-ratings-display { position: absolute; left: 0; top: 0; height: 12px; }
 		.tx-ratings-grey-bar { position: absolute; left: 0; top: 0; width: 55px; height: 12px; background: url(rating_stars.gif) repeat-x; }
 		.tx-ratings-gold-bar { position: absolute; left: 0; top: 0; width: 0px; height: 12px; background: url(rating_stars.gif) repeat-x 0 -12px; }

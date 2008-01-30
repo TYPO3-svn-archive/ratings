@@ -1,0 +1,10 @@
+/*
+	Images (c) ryan masuga, ryan@masugadesign.com (http://www.masugadesign.com)
+*/
+.tx-ratings { padding-top: 30px; }
+.tx-ratings-grey-bar { width: 125px; height: 25px; background-image: url(yvoschaap.gif); }
+.tx-ratings-gold-bar { height: 25px; background: url(yvoschaap.gif) repeat-x 0 -25px; }
+.tx-ratings-vote-bar { width: 125px; height: 12px; }
+.tx-ratings-vote-bar DIV A { width: 25px; height: 25px; }
+.tx-ratings-vote-bar DIV A:hover { background-image: url(yvoschaap.gif); background-position: 0 -50px; }
+.tx-ratings-text { font-size: 10px; }
