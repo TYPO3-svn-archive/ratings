@@ -7,7 +7,7 @@ function submitRating(id, rating, check) {
 	new Ajax.Updater('tx-ratings-' + id, 'index.php?eID=tx_ratings_ajax', {
 		asynchronous: true,
 		method: 'post',
-		parameters: 'rating=' + rating + '&data=' + tx_ratings_ajaxData + '&check=' + check
+		parameters: 'ref=' + id + '&rating=' + rating + '&data=' + tx_ratings_ajaxData + '&check=' + check
 	});
 }
 

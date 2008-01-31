@@ -184,6 +184,17 @@ class tx_ratings_api {
 	protected function addHeaderParts($ref, $template, $conf) {
 		$subPart = $this->cObj->getSubpart($template, '###HEADER_PARTS###');
 		$key = 'tx_ratings_' . md5($subPart);
+
+		$confCopy = $conf;
+		unset($confCopy['userFunc']);
+		$confCopy['templateFile'] = $GLOBALS['TSFE']->tmpl->getFileName($conf['templateFile']);
+		$data = serialize(array(
+			'pid' => $GLOBALS['TSFE']->id,
+			'conf' => $confCopy,
+			'lang' => $GLOBALS['TSFE']->lang,
+		));
+		$this->ajaxData = base64_encode($data);
+
 		if (!isset($GLOBALS['TSFE']->additionalHeaderData[$key])) {
 			if ($conf['additionalCSS']) {
 				$subSubPart = $this->cObj->getSubpart($template, '###ADDITIONAL_CSS###');
@@ -193,16 +204,6 @@ class tx_ratings_api {
 			else {
 				$subParts['###ADDITIONAL_CSS###'] = '';
 			}
-			$confCopy = $conf;
-			unset($confCopy['userFunc']);
-			$confCopy['templateFile'] = $GLOBALS['TSFE']->tmpl->getFileName($conf['templateFile']);
-			$data = serialize(array(
-				'pid' => $GLOBALS['TSFE']->id,
-				'conf' => $confCopy,
-				'lang' => $GLOBALS['TSFE']->lang,
-				'ref' => $ref,
-			));
-			$this->ajaxData = base64_encode($data);
 			$GLOBALS['TSFE']->additionalHeaderData[$key] =
 				$this->cObj->substituteMarkerArrayCached($subPart, array(
 					'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('ratings'),
@@ -269,11 +270,12 @@ class tx_ratings_api {
 			$voteSub = $this->cObj->getSubpart($template, '###VOTE_LINK_SUB###');
 			$links = '';
 			for ($i = $conf['minValue']; $i <= $conf['maxValue']; $i++) {
+				$check = md5($ref . $i . $this->ajaxData . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
 				$links .= $this->cObj->substituteMarkerArray($voteSub, array(
 					'###VALUE###' => $i,
 					'###REF###' => $ref,
 					'###PID###' => $GLOBALS['TSFE']->id,
-					'###CHECK###' => md5($i . $this->ajaxData . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']),
+					'###CHECK###' => $check,
 					'###SITE_REL_PATH###' => $siteRelPath,
 				));
 			}

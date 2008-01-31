@@ -88,14 +88,14 @@ class tx_ratings_ajax {
 			echo $GLOBALS['LANG']->getLL('bad_rating_value');
 			exit;
 		}
-		$check = t3lib_div::_GP('check');
-		if (md5($this->rating . $data_str . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) != $check) {
-			echo $GLOBALS['LANG']->getLL('wrong_check_value');
-			exit;
-		}
-		$this->ref = $data['ref'];
+		$this->ref = t3lib_div::_GP('ref');
 		if (trim($this->ref) == '') {
 			echo $GLOBALS['LANG']->getLL('bad_ref_value');
+			exit;
+		}
+		$check = t3lib_div::_GP('check');
+		if (md5($this->ref . $this->rating . $data_str . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) != $check) {
+			echo $GLOBALS['LANG']->getLL('wrong_check_value');
 			exit;
 		}
 		$this->conf = $data['conf'];

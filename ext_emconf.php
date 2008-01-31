@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext: "ratings"
 #
-# Auto generated 28-01-2008 14:33
+# Auto generated 31-01-2008 14:44
 #
 # Manual updates:
 # Only the data in the array - anything else is removed by next write.
@@ -29,7 +29,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'clearCacheOnLoad' => 0,
 	'lockType' => '',
 	'author_company' => 'Netcreators BV',
-	'version' => '0.1.0',
+	'version' => '0.2.0',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.1.0-100.0.0',
@@ -39,7 +39,9 @@ $EM_CONF[$_EXTKEY] = array(
 		'suggests' => array(
 		),
 	),
-	'_md5_values_when_last_written' => 'a:20:{s:9:"ChangeLog";s:4:"fae9";s:12:"ext_icon.gif";s:4:"1bdc";s:17:"ext_localconf.php";s:4:"1e3e";s:14:"ext_tables.php";s:4:"a9d1";s:14:"ext_tables.sql";s:4:"bda5";s:24:"icon_tx_ratings_data.gif";s:4:"475a";s:13:"locallang.xml";s:4:"2bed";s:16:"locallang_db.xml";s:4:"745f";s:7:"tca.php";s:4:"b56c";s:19:"doc/wizard_form.dat";s:4:"e199";s:20:"doc/wizard_form.html";s:4:"8b92";s:38:"modfunc1/class.tx_ratings_modfunc1.php";s:4:"6b74";s:22:"modfunc1/locallang.xml";s:4:"aaa4";s:14:"pi1/ce_wiz.gif";s:4:"02b6";s:28:"pi1/class.tx_ratings_pi1.php";s:4:"21fa";s:36:"pi1/class.tx_ratings_pi1_wizicon.php";s:4:"f9a0";s:13:"pi1/clear.gif";s:4:"cc11";s:17:"pi1/locallang.xml";s:4:"4cf6";s:28:"static/Ratings/constants.txt";s:4:"023e";s:24:"static/Ratings/setup.txt";s:4:"6daf";}',
+	'_md5_values_when_last_written' => 'a:36:{s:9:"ChangeLog";s:4:"2154";s:25:"class.tx_ratings_ajax.php";s:4:"cbcd";s:24:"class.tx_ratings_api.php";s:4:"4566";s:27:"class.tx_ratings_ttnews.php";s:4:"57d7";s:12:"ext_icon.gif";s:4:"968d";s:17:"ext_localconf.php";s:4:"3303";s:14:"ext_tables.php";s:4:"fd84";s:14:"ext_tables.sql";s:4:"b675";s:24:"icon_tx_ratings_data.gif";s:4:"968d";s:25:"icon_tx_ratings_iplog.gif";s:4:"75cb";s:13:"locallang.xml";s:4:"787c";s:18:"locallang_ajax.xml";s:4:"7ac2";s:16:"locallang_db.xml";s:4:"53c8";s:7:"tca.php";s:4:"3c40";s:14:"doc/manual.sxw";s:4:"d41d";s:38:"modfunc1/class.tx_ratings_modfunc1.php";s:4:"6b74";s:22:"modfunc1/locallang.xml";s:4:"aaa4";s:14:"pi1/ce_wiz.gif";s:4:"2328";s:28:"pi1/class.tx_ratings_pi1.php";s:4:"238e";s:36:"pi1/class.tx_ratings_pi1_wizicon.php";s:4:"f9a0";s:13:"pi1/clear.gif";s:4:"cc11";s:17:"pi1/locallang.xml";s:4:"4cf6";s:19:"res/komodomedia.css";s:4:"1a66";s:19:"res/komodomedia.gif";s:4:"5e11";s:20:"res/masugadesign.css";s:4:"eb59";s:20:"res/masugadesign.gif";s:4:"eed2";s:13:"res/rating.js";s:4:"e706";s:20:"res/rating_stars.gif";s:4:"8593";s:16:"res/ratings.html";s:4:"bc1d";s:21:"res/ratings_test.html";s:4:"02ff";s:14:"res/styles.css";s:4:"a37c";s:15:"res/working.gif";s:4:"70d9";s:17:"res/yvoschaap.css";s:4:"96f1";s:17:"res/yvoschaap.gif";s:4:"0611";s:28:"static/Ratings/constants.txt";s:4:"4b19";s:24:"static/Ratings/setup.txt";s:4:"f8ab";}',
+	'suggests' => array(
+	),
 );
 
 ?>
