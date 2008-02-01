@@ -32,3 +32,10 @@ CREATE TABLE tx_ratings_iplog (
 	KEY parent (pid),
 	KEY ip_check (reference(16),ip)
 ) ENGINE = InnoDB;
+
+#
+# Table structure for table 'tt_news'
+#
+CREATE TABLE tt_news (
+	tx_ratings_enable int(1) DEFAULT '1' NOT NULL,
+);

@@ -1,3 +1,7 @@
+2008-02-01	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Added flag to tt_news to enable/disable ratings
+
 2008-01-28	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Initial release

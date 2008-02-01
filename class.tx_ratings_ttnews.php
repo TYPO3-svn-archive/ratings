@@ -72,12 +72,14 @@ class tx_ratings_ttnews {
 	 * @param	array		$markerArray	Array with merkers
 	 * @param	array		$row	tt_news record
 	 * @param	array		$lConf	Configuration array for current tt_news view
-	 * @param	tx_ttnews		$pObj	Reference to parent object
+	 * @param	tx_ttnews	$pObj	Reference to parent object
 	 * @return	array		Modified marker array
 	 */
-	function extraItemMarkerProcessor($markerArray, $row, $lConf, &$pObj) {
+	public function extraItemMarkerProcessor(array &$markerArray, array &$row, array &$lConf, &$pObj) {
 		/* @var $pObj tx_ttnews */
-		$markerArray['###TX_RATINGS###'] = $this->apiObj->getRatingDisplay('tt_news_' . $row['uid']);
+		if ($row['tx_ratings_enable']) {
+			$markerArray['###TX_RATINGS###'] = $this->apiObj->getRatingDisplay('tt_news_' . $row['uid']);
+		}
 		return $markerArray;
 	}
 }

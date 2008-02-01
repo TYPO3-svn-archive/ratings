@@ -1,6 +1,28 @@
 <?php
 if (!defined ('TYPO3_MODE')) die('Access denied.');
 
+if (t3lib_extMgm::isLoaded('tt_news')) {
+	// New columns
+	$tempColumns = array (
+		'tx_ratings_enable' => Array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:comments_ic/locallang_db.xml:tt_news.tx_ratings_enable',
+			'config' => array (
+				'type'     => 'check',
+				'items'    => array(
+					array('', '')
+				),
+				'default'  => '1'
+			)
+		),
+	);
+
+	t3lib_div::loadTCA('tt_news');
+	t3lib_extMgm::addTCAcolumns('tt_news', $tempColumns, 1);
+	t3lib_extMgm::addToAllTCAtypes('tt_news', 'tx_ratings_enable;;;;1-1-1');
+}
+
+
 $TCA['tx_ratings_data'] = array (
 	'ctrl' => array (
 		'title'     => 'LLL:EXT:ratings/locallang_db.xml:tx_ratings_data',
