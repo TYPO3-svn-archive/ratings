@@ -1,3 +1,9 @@
+2008-02-04	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Added debug mode (makes tables visible and writable to BE users)
+	* Added disabling IP check (useful for testing)
+	* Cleaned up various files
+
 2008-02-01	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Added flag to tt_news to enable/disable ratings
