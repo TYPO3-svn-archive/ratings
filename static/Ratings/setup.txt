@@ -7,4 +7,6 @@ plugin.tx_ratings_pi1 {
     maxValue = {$plugin.tx_ratings_pi1.maxValue}
     ratingImageWidth = {$plugin.tx_ratings_pi1.ratingImageWidth}
     additionalCSS = {$plugin.tx_ratings_pi1.additionalCSS}
+    mode = {$plugin.tx_ratings_pi1.mode}
+    disableIpCheck = {$plugin.tx_ratings_pi1.disableIpCheck}
 }

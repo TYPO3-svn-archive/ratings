@@ -8,7 +8,7 @@
 		<languageKey index="default" type="array">
 			<label index="pi1_title">Ratings</label>
 			<label index="pi1_plus_wiz_description">Modern AJAX-based rating system</label>
-			<label index="api_rating">Rating: %.1f of %d. %d vote(s).</label>
+			<label index="api_rating">Rating: %1$.1f of %2$d. %3$d vote(s).</label>
 			<label index="api_not_rated">Not rated yet. Be the first who rates this item!</label>
 			<label index="api_submitting">Submitting your vote...</label>
 			<label index="api_already_rated">You have rated this item already.</label>

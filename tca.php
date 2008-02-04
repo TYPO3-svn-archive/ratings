@@ -1,6 +1,9 @@
 <?php
 if (!defined ('TYPO3_MODE')) die('Access denied.');
 
+$tx_ratings_sysconf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ratings']);
+$tx_ratings_debug_mode_disabled = !intval($tx_ratings_sysconf['debugMode']);
+
 $TCA['tx_ratings_data'] = array (
 	'ctrl' => $TCA['tx_ratings_data']['ctrl'],
 	'columns' => array (
@@ -80,7 +83,7 @@ $TCA['tx_ratings_iplog'] = array(
 				'size'     => '22',
 				'max'      => '16',
 				'eval'     => 'datetime',
-				'readOnly' => true,
+				'readOnly' => $tx_ratings_debug_mode_disabled,
 			)
 		),
 		'ip' => array (
@@ -101,5 +104,8 @@ $TCA['tx_ratings_iplog'] = array(
 //		'1' => array('showitem' => '')
 //	)
 );
+
+unset($tx_ratings_sysconf);
+unset($tx_ratings_debug_mode_disabled);
 
 ?>

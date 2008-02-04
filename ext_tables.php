@@ -22,6 +22,8 @@ if (t3lib_extMgm::isLoaded('tt_news')) {
 	t3lib_extMgm::addToAllTCAtypes('tt_news', 'tx_ratings_enable;;;;1-1-1');
 }
 
+$tx_ratings_sysconf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ratings']);
+$tx_ratings_debug_mode_disabled = !intval($tx_ratings_sysconf['debugMode']);
 
 $TCA['tx_ratings_data'] = array (
 	'ctrl' => array (
@@ -33,8 +35,8 @@ $TCA['tx_ratings_data'] = array (
 		'default_sortby' => 'ORDER BY crdate DESC',
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
 		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'icon_tx_ratings_data.gif',
-		'hideTable'	=> true,
-		'readOnly'	=> true,
+		'hideTable'	=> $tx_ratings_debug_mode_disabled,
+		'readOnly'	=> $tx_ratings_debug_mode_disabled,
 	),
 );
 
@@ -48,10 +50,13 @@ $TCA['tx_ratings_iplog'] = array (
 		'default_sortby' => 'ORDER BY crdate DESC',
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
 		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'icon_tx_ratings_iplog.gif',
-		'hideTable'	=> true,
-		'readOnly'	=> true,
+		'hideTable'	=> $tx_ratings_debug_mode_disabled,
+		'readOnly'	=> $tx_ratings_debug_mode_disabled,
 	),
 );
+
+unset($tx_ratings_debug_mode_disabled);
+unset($tx_ratings_sysconf);
 
 t3lib_div::loadTCA('tt_content');
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY.'_pi1'] = 'layout,select_key';

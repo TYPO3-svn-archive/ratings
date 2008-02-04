@@ -204,7 +204,7 @@ class tx_ratings_api {
 			else {
 				$subParts['###ADDITIONAL_CSS###'] = '';
 			}
-			$GLOBALS['TSFE']->additionalHeaderData[$key] =
+			$GLOBALS['TSFE']->additionalHeaderData[$key] = '<!--' . $key . '-->' . chr(10) .
 				$this->cObj->substituteMarkerArrayCached($subPart, array(
 					'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('ratings'),
 					'###AJAX_DATA###' => $this->ajaxData,
@@ -261,7 +261,7 @@ class tx_ratings_api {
 			$rating_value = 0;
 			$rating_str = $language->sL('LLL:EXT:ratings/locallang.xml:api_not_rated');
 		}
-		if ($this->isVoted($ref, $conf)) {
+		if ($conf['mode'] == 'static' || (!$this->conf['disableIpCheck'] && $this->isVoted($ref, $conf))) {
 			$subTemplate = $this->cObj->getSubpart($template, '###TEMPLATE_RATING_STATIC###');
 			$links = '';
 		}

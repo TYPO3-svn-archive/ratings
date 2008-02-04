@@ -6,6 +6,10 @@ plugin.tx_ratings_pi1.minValue = 1
 plugin.tx_ratings_pi1.maxValue = 5
 # cat=plugin.tx_ratings_pi1/setup; type=int+; label=Rating image width
 plugin.tx_ratings_pi1.ratingImageWidth = 11
+# cat=plugin.tx_ratings_pi1/setup; type=options[Default=,Force static=static]; label=Display mode
+plugin.tx_ratings_pi1.mode =
+# cat=plugin.tx_ratings_pi1/setup; type=boolean; label=Disable IP checks;If checked, disables IP checks. This will let users to vote many times on the same item. Useful for debugging.
+plugin.tx_ratings_pi1.disableIpCheck = 0
 # cat=plugin.tx_ratings_pi1/file; type=string; label=Template file
 plugin.tx_ratings_pi1.templateFile = EXT:ratings/res/ratings.html
 # cat=plugin.tx_ratings_pi1/file; type=string; label=Additional CSS file

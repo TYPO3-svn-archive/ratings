@@ -131,7 +131,7 @@ class tx_ratings_ajax {
 		$apiObj = t3lib_div::makeInstance('tx_ratings_api');
 		/* @var $apiObj tx_ratings_api */
 
-		if (!$apiObj->isVoted($this->ref, $this->conf)) {
+		if ($this->conf['disableIpCheck'] || !$apiObj->isVoted($this->ref, $this->conf)) {
 
 			// Do everything inside transaction
 			$GLOBALS['TYPO3_DB']->sql_query('START TRANSACTION');
@@ -171,6 +171,7 @@ class tx_ratings_ajax {
 		}
 
 		// Get rating display
+		$this->conf['mode'] = 'static';
 		echo $apiObj->getRatingDisplay($this->ref, $this->conf);
 	}
 }
