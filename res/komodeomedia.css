@@ -2,9 +2,9 @@
 	Images (c) Rogie King, KOMODEO MEDIA, http://komodomedia.com/blog/index.php/2006/01/09/css-star-rating-part-deux/
 */
 .tx-ratings { padding-top: 35px; }
-.tx-ratings-grey-bar { width: 150px; height: 30px; background-image: url(komodomedia.gif); }
-.tx-ratings-gold-bar { height: 30px; background: url(komodomedia.gif) repeat-x 0 -30px; }
+.tx-ratings-grey-bar { width: 150px; height: 30px; background-image: url(komodeomedia.gif); }
+.tx-ratings-gold-bar { height: 30px; background: url(komodeomedia.gif) repeat-x 0 -30px; }
 .tx-ratings-vote-bar { width: 150px; height: 30px; }
 .tx-ratings-vote-bar DIV A { width: 30px; height: 30px; }
-.tx-ratings-vote-bar DIV A:hover { background-image: url(komodomedia.gif); background-position: 0 -60px; }
+.tx-ratings-vote-bar DIV A:hover { background-image: url(komodoemedia.gif); background-position: 0 -60px; }
 .tx-ratings-text { font-size: 11px; }
