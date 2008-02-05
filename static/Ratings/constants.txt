@@ -13,4 +13,4 @@ plugin.tx_ratings_pi1.disableIpCheck = 0
 # cat=plugin.tx_ratings_pi1/file; type=string; label=Template file
 plugin.tx_ratings_pi1.templateFile = EXT:ratings/res/ratings.html
 # cat=plugin.tx_ratings_pi1/file; type=string; label=Additional CSS file
-plugin.tx_ratings_pi1.additionalCSS =
+plugin.tx_ratings_pi1.r =
