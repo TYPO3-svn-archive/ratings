@@ -70,14 +70,6 @@ class tx_ratings_api {
 	protected $cObj;
 
 	/**
-	 * AJAX encoded data. This is created in {@link addHeaderData} and used in
-	 * {@link getRatingDisplay} to produce check value
-	 *
-	 * @var string
-	 */
-	protected $ajaxData;
-
-	/**
 	 * Creates an instance of this class
 	 *
 	 * @return	void
@@ -185,16 +177,6 @@ class tx_ratings_api {
 		$subPart = $this->cObj->getSubpart($template, '###HEADER_PARTS###');
 		$key = 'tx_ratings_' . md5($subPart);
 
-		$confCopy = $conf;
-		unset($confCopy['userFunc']);
-		$confCopy['templateFile'] = $GLOBALS['TSFE']->tmpl->getFileName($conf['templateFile']);
-		$data = serialize(array(
-			'pid' => $GLOBALS['TSFE']->id,
-			'conf' => $confCopy,
-			'lang' => $GLOBALS['TSFE']->lang,
-		));
-		$this->ajaxData = base64_encode($data);
-
 		if (!isset($GLOBALS['TSFE']->additionalHeaderData[$key])) {
 			if ($conf['additionalCSS']) {
 				$subSubPart = $this->cObj->getSubpart($template, '###ADDITIONAL_CSS###');
@@ -204,10 +186,9 @@ class tx_ratings_api {
 			else {
 				$subParts['###ADDITIONAL_CSS###'] = '';
 			}
-			$GLOBALS['TSFE']->additionalHeaderData[$key] = '<!--' . $key . '-->' . chr(10) .
+			$GLOBALS['TSFE']->additionalHeaderData[$key] =
 				$this->cObj->substituteMarkerArrayCached($subPart, array(
 					'###SITE_REL_PATH###' => t3lib_extMgm::siteRelPath('ratings'),
-					'###AJAX_DATA###' => $this->ajaxData,
 				), $subParts);
 		}
 	}
@@ -268,15 +249,27 @@ class tx_ratings_api {
 		else {
 			$subTemplate = $this->cObj->getSubpart($template, '###TEMPLATE_RATING###');
 			$voteSub = $this->cObj->getSubpart($template, '###VOTE_LINK_SUB###');
+			// Make ajaxData
+			$confCopy = $conf;
+			unset($confCopy['userFunc']);
+			$confCopy['templateFile'] = $GLOBALS['TSFE']->tmpl->getFileName($conf['templateFile']);
+			$data = serialize(array(
+				'pid' => $GLOBALS['TSFE']->id,
+				'conf' => $confCopy,
+				'lang' => $GLOBALS['TSFE']->lang,
+			));
+			$ajaxData = base64_encode($data);
+			// Create links
 			$links = '';
 			for ($i = $conf['minValue']; $i <= $conf['maxValue']; $i++) {
-				$check = md5($ref . $i . $this->ajaxData . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
+				$check = md5($ref . $i . $ajaxData . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
 				$links .= $this->cObj->substituteMarkerArray($voteSub, array(
 					'###VALUE###' => $i,
 					'###REF###' => $ref,
 					'###PID###' => $GLOBALS['TSFE']->id,
 					'###CHECK###' => $check,
 					'###SITE_REL_PATH###' => $siteRelPath,
+					'###AJAX_DATA###' => $ajaxData,
 				));
 			}
 		}
