@@ -1,0 +1,23 @@
+2008-02-05	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Fixes for 'mode' TS parameter
+	* Added flexform confguration to pi1 plugin
+	* Updated manual
+	* Added rollover effects for rating bar
+	* Release of ratings 1.0.0
+	* Adjustment to show multiple ratings on the page
+	* Release of ratings 1.0.1
+
+2008-02-04	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Added debug mode (makes tables visible and writable to BE users)
+	* Added disabling IP check (useful for testing)
+	* Cleaned up various files
+
+2008-02-01	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Added flag to tt_news to enable/disable ratings
+
+2008-01-28	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Initial release

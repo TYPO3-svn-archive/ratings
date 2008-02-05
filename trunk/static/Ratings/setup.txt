@@ -1,0 +1,12 @@
+plugin.tx_ratings_pi1 = USER
+plugin.tx_ratings_pi1 {
+    userFunc = tx_ratings_pi1->main
+    storagePid = {$plugin.tx_ratings_pi1.storagePid}
+    templateFile = {$plugin.tx_ratings_pi1.templateFile}
+    minValue = {$plugin.tx_ratings_pi1.minValue}
+    maxValue = {$plugin.tx_ratings_pi1.maxValue}
+    ratingImageWidth = {$plugin.tx_ratings_pi1.ratingImageWidth}
+    additionalCSS = {$plugin.tx_ratings_pi1.additionalCSS}
+    mode = {$plugin.tx_ratings_pi1.mode}
+    disableIpCheck = {$plugin.tx_ratings_pi1.disableIpCheck}
+}
