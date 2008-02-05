@@ -1,3 +1,7 @@
+2008-02-05	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Fixes for 'mode' TS parameter
+
 2008-02-04	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Added debug mode (makes tables visible and writable to BE users)

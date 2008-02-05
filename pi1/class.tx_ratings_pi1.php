@@ -50,15 +50,58 @@ class tx_ratings_pi1 extends tslib_pibase {
 	 * @return	The		content that is displayed on the website
 	 */
 	function main($content, $conf) {
-		$this->conf = $conf;
-		$this->pi_setPiVarDefaults();
-//		$this->pi_loadLL();
+		$this->mergeConfiguration($conf);
+
+		if (!isset($this->conf['storagePid'])) {
+			$this->pi_loadLL();
+			return $this->pi_wrapInBaseClass($this->pi_getLL('no_ts_template'));
+		}
 
 		$api = t3lib_div::makeInstance('tx_ratings_api');
 		/* @var $api tx_ratings_api */
-		$content = $api->getRatingDisplay('pages_' . $GLOBALS['TSFE']->id, $conf);
+		$content = $api->getRatingDisplay('pages_' . $GLOBALS['TSFE']->id, $this->conf);
 
 		return $this->pi_wrapInBaseClass($content);
+	}
+
+
+	/**
+	 * Merges TS configuration with configuration from flexform (latter takes precedence).
+	 *
+	 * @param	array		$conf	Configuration from TS
+	 * @return	void
+	 */
+	function mergeConfiguration($conf) {
+		$this->conf = $conf;
+
+		$this->fetchConfigValue('storagePid');
+		$this->conf['storagePid'] = intval($this->conf['storagePid']);
+		if ($this->conf['storagePid'] == 0) {
+			$this->conf['storagePid'] = $GLOBALS['TSFE']->id;
+		}
+		$this->fetchConfigValue('templateFile');
+	}
+
+	/**
+	 * Fetches configuration value from flexform. If value exists, value in
+	 * <code>$this->conf</code> is replaced with this value.
+	 *
+	 * @param	string		$param	Parameter name. If <code>.</code> is found, the first part is section name, second is key (applies only to $this->conf)
+	 * @return	void
+	 */
+	function fetchConfigValue($param) {
+		if (strchr($param, '.')) {
+			list($section, $param) = explode('.', $param, 2);
+		}
+		$value = trim($this->pi_getFFvalue($this->cObj->data['pi_flexform'], $param, ($section ? 's' . ucfirst($section) : 'sDEF')));
+		if (!is_null($value) && $value != '') {
+			if ($section) {
+				$this->conf[$section . '.'][$param] = $value;
+			}
+			else {
+				$this->conf[$param] = $value;
+			}
+		}
 	}
 }
 

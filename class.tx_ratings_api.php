@@ -261,7 +261,7 @@ class tx_ratings_api {
 			$rating_value = 0;
 			$rating_str = $language->sL('LLL:EXT:ratings/locallang.xml:api_not_rated');
 		}
-		if ($conf['mode'] == 'static' || (!$this->conf['disableIpCheck'] && $this->isVoted($ref, $conf))) {
+		if ($conf['mode'] == 'static' || (!$conf['disableIpCheck'] && $this->isVoted($ref, $conf))) {
 			$subTemplate = $this->cObj->getSubpart($template, '###TEMPLATE_RATING_STATIC###');
 			$links = '';
 		}
