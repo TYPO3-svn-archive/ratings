@@ -10,7 +10,7 @@
 			<label index="wrong_check_value">Error: bad check value</label>
 			<label index="bad_ref_value">Error: bad reference value</label>
 			<label index="bad_conf_value">Error: bad configuration value</label>
-			<label index="bad_pid_value">Error: bad check value</label>
+			<label index="bad_pid_value">Error: bad pid value</label>
 		</languageKey>
 	</data>
 </T3locallang>

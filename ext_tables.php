@@ -6,7 +6,7 @@ if (t3lib_extMgm::isLoaded('tt_news')) {
 	$tempColumns = array (
 		'tx_ratings_enable' => Array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:comments_ic/locallang_db.xml:tt_news.tx_ratings_enable',
+			'label' => 'LLL:EXT:ratings/locallang_db.xml:tt_news.tx_ratings_enable',
 			'config' => array (
 				'type'     => 'check',
 				'items'    => array(

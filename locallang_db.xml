@@ -16,6 +16,7 @@
 			<label index="tx_ratings_iplog.ip">IP address:</label>
 			<label index="tt_content.list_type_pi1">Ratings</label>
 			<label index="moduleFunction.tx_ratings_modfunc1">Ratings</label>
+			<label index="tt_news.tx_ratings_enable">Enable ratings</label>
 		</languageKey>
 	</data>
 </T3locallang>

@@ -12,7 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Ratings',
-	'description' => 'Modern AJAX-based ratings system',
+	'description' => 'Modern AJAX-based ratings system. Public free support is provided only through TYPO3 mailing lists! Contact by e-mail for commercial support.',
 	'category' => 'plugin',
 	'author' => 'Dmitry Dulepov [netcreators]',
 	'author_email' => 'dmitry@typo3.org',
