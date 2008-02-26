@@ -154,7 +154,6 @@ class tx_ratings_api {
 	 * @return	boolean		true if item was voted
 	 */
 	public function isVoted($ref, array &$conf) {
-
 		list($rec) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('COUNT(*) AS t',
 					'tx_ratings_iplog',
 					'pid=' . intval($conf['storagePid']) .
@@ -269,7 +268,7 @@ class tx_ratings_api {
 					'###PID###' => $GLOBALS['TSFE']->id,
 					'###CHECK###' => $check,
 					'###SITE_REL_PATH###' => $siteRelPath,
-					'###AJAX_DATA###' => $ajaxData,
+					'###AJAX_DATA###' => rawurlencode($ajaxData),
 				));
 			}
 		}

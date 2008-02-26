@@ -103,7 +103,7 @@ class tx_ratings_ajax {
 			echo $GLOBALS['LANG']->getLL('bad_conf_value');
 			exit;
 		}
-		$this->pid = $this->conf['storagePid'];
+		$this->pid = $data['pid'];
 		if (!t3lib_div::testInt($this->pid)) {
 			echo $GLOBALS['LANG']->getLL('bad_pid_value');
 			exit;
@@ -135,7 +135,7 @@ class tx_ratings_ajax {
 
 			// Do everything inside transaction
 			$GLOBALS['TYPO3_DB']->sql_query('START TRANSACTION');
-			$dataWhere = 'pid=' . intval($this->pid) .
+			$dataWhere = 'pid=' . intval($this->conf['storagePid']) .
 						' AND reference=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->ref, 'tx_ratings_data') .
 						$apiObj->enableFields('tx_ratings_data');
 			list($row) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('COUNT(*) AS t',
@@ -151,7 +151,7 @@ class tx_ratings_ajax {
 			else {
 				$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_ratings_data',
 					array(
-						'pid' => $this->pid,
+						'pid' => $this->conf['storagePid'],
 						'crdate' => time(),
 						'tstamp' => time(),
 						'reference' => $this->ref,
@@ -161,7 +161,7 @@ class tx_ratings_ajax {
 			}
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_ratings_iplog',
 				array(
-					'pid' => $this->pid,
+					'pid' => $this->conf['storagePid'],
 					'crdate' => time(),
 					'tstamp' => time(),
 					'reference' => $this->ref,
