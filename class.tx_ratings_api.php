@@ -228,9 +228,14 @@ class tx_ratings_api {
 	 */
 	protected function generateRatingContent($ref, $template, array &$conf) {
 		// Init language
-		$language = t3lib_div::makeInstance('language');
+		if (isset($GLOBALS['LANG'])) {
+			$language = &$GLOBALS['LANG'];
+		}
+		else {
+			$language = t3lib_div::makeInstance('language');
+			$language->init($GLOBALS['TSFE']->lang);
+		}
 		/* @var $language language */
-		$language->init($GLOBALS['TSFE']->lang);
 
 		$rating = $this->getRatingInfo($ref, $conf);
 		if ($rating['vote_count'] > 0) {

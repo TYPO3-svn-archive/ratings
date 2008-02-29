@@ -1,3 +1,7 @@
+2008-02-29	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Fixed bug: $GLOBALS['TSFE']->lang is empty when API works inside AJAX call (thanks to Georg Ringer)
+
 2008-02-25	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Several fixes for non-working ratings at some installations
