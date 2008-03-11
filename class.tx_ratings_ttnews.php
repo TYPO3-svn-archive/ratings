@@ -80,6 +80,9 @@ class tx_ratings_ttnews {
 		if ($row['tx_ratings_enable']) {
 			$markerArray['###TX_RATINGS###'] = $this->apiObj->getRatingDisplay('tt_news_' . $row['uid']);
 		}
+		else {
+			$markerArray['###TX_RATINGS###'] = '';
+		}
 		return $markerArray;
 	}
 }

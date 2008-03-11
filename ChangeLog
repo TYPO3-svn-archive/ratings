@@ -1,3 +1,7 @@
+2008-03-11	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Fixed bug: ###TX_RATINGS### is shown when ratings are disabled for tt_news item
+
 2008-02-29	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Fixed bug: $GLOBALS['TSFE']->lang is empty when API works inside AJAX call (thanks to Georg Ringer)
