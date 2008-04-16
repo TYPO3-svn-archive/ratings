@@ -30,7 +30,7 @@ CREATE TABLE tx_ratings_iplog (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
-	KEY ip_check (reference(16),ip)
+	KEY ip_check (reference(16),ip(16))
 ) ENGINE = InnoDB;
 
 #
