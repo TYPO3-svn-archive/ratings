@@ -75,7 +75,7 @@ class tx_ratings_ttnews {
 	 * @param	tx_ttnews	$pObj	Reference to parent object
 	 * @return	array		Modified marker array
 	 */
-	public function extraItemMarkerProcessor(array &$markerArray, array &$row, array &$lConf, &$pObj) {
+	public function extraItemMarkerProcessor(array &$markerArray, array &$row, &$lConf, &$pObj) {
 		/* @var $pObj tx_ttnews */
 		if ($row['tx_ratings_enable']) {
 			$markerArray['###TX_RATINGS###'] = $this->apiObj->getRatingDisplay('tt_news_' . $row['uid']);
