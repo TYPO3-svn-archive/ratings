@@ -159,6 +159,17 @@ class tx_ratings_ajax {
 						'rating' => $this->rating,
 					));
 			}
+			// Call hook if ratings is updated
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ratings']['updateRatings'])) {
+				foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ratings']['updateRatings'] as $userFunc) {
+					$params = array(
+						'pObj' => &$this,
+						'pid' => $this->pid,
+						'ref' => $this->ref,
+					);
+					t3lib_div::callUserFunction($userFunc, $params, $this);
+				}
+			}
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_ratings_iplog',
 				array(
 					'pid' => $this->conf['storagePid'],
