@@ -228,7 +228,7 @@ class tx_ratings_api {
 	 */
 	protected function generateRatingContent($ref, $template, array &$conf) {
 		// Init language
-		if (isset($GLOBALS['LANG'])) {
+		if ($GLOBALS['LANG'] instanceof language) {
 			$language = &$GLOBALS['LANG'];
 		}
 		else {

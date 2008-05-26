@@ -2,6 +2,7 @@
 
 	* Convert ratings to USER_INT
 	* Use USER_INT in tt_news hook to allow live update for ratings
+	* Fixed bug #8181: Raitings crashes with PHP error if not logged into BE
 
 2008-03-11	Dmitry Dulepov	<dmitry@typo3.org>
 
