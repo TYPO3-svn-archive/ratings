@@ -1,6 +1,7 @@
 2008-05-26  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Convert ratings to USER_INT
+	* Use USER_INT in tt_news hook to allow live update for ratings
 
 2008-03-11	Dmitry Dulepov	<dmitry@typo3.org>
 

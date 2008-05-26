@@ -78,10 +78,23 @@ class tx_ratings_ttnews {
 	public function extraItemMarkerProcessor(array &$markerArray, array &$row, &$lConf, &$pObj) {
 		/* @var $pObj tx_ttnews */
 		if ($row['tx_ratings_enable']) {
-			$markerArray['###TX_RATINGS###'] = $this->apiObj->getRatingDisplay('tt_news_' . $row['uid']);
+			$conf = $this->apiObj->getDefaultConfig();
+			$conf['includeLibs'] = 'EXT:ratings/pi1/class.tx_ratings_pi1.php';
+
+			$cObj = t3lib_div::makeInstance('tslib_cObj');
+			/* @var $cObj tslib_cObj */
+			$cObj->start(array());
+			$markerArray['###TX_RATINGS###'] = $cObj->cObjGetSingle('USER_INT', $conf);
+
+			$cObj = t3lib_div::makeInstance('tslib_cObj');
+			/* @var $cObj tslib_cObj */
+			$cObj->start(array());
+			$conf['mode'] = 'static';
+			$markerArray['###TX_RATINGS_STATIC###'] = $cObj->cObjGetSingle('USER_INT', $conf);
 		}
 		else {
 			$markerArray['###TX_RATINGS###'] = '';
+			$markerArray['###TX_RATINGS_STATIC###'] = '';
 		}
 		return $markerArray;
 	}
