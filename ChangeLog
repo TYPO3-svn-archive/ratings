@@ -1,3 +1,7 @@
+2008-05-26  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Convert ratings to USER_INT
+
 2008-03-11	Dmitry Dulepov	<dmitry@typo3.org>
 
 	* Fixed bug: ###TX_RATINGS### is shown when ratings are disabled for tt_news item

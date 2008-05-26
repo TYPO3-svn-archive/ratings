@@ -117,9 +117,6 @@ class tx_ratings_ajax {
 	 */
 	public function main() {
 		$this->updateRating();
-		// Clear cache. TCEmain requires $TCA for this, so we just do it ourselves.
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', 'page_id=' . $this->pid);
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', 'page_id=' . $this->pid);
 	}
 
 	/**
