@@ -1,3 +1,7 @@
+2008-09-02	Dmitry Dulepov	<dmitry@typo3.org>
+
+	* Fixed bug: tt_news rating did not work
+
 2008-05-26  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Convert ratings to USER_INT

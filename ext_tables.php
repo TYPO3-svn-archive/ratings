@@ -23,7 +23,7 @@ if (t3lib_extMgm::isLoaded('tt_news')) {
 }
 
 $tx_ratings_sysconf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ratings']);
-$tx_ratings_debug_mode_disabled = !intval($tx_ratings_sysconf['debugMode']);
+$tx_ratings_debug_mode_disabled = is_array($tx_ratings_sysconf) && !intval($tx_ratings_sysconf['debugMode']);
 
 $TCA['tx_ratings_data'] = array (
 	'ctrl' => array (

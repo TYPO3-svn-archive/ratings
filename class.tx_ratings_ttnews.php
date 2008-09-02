@@ -51,22 +51,6 @@ require_once(t3lib_extMgm::extPath('ratings', 'class.tx_ratings_api.php'));
  */
 class tx_ratings_ttnews {
 	/**
-	 * API object
-	 *
-	 * @var	tx_ratings_api
-	 */
-	var $apiObj;
-
-	/**
-	 * Creates an instance of this class
-	 *
-	 * @return	void
-	 */
-	public function __construct() {
-		$this->apiObj = t3lib_div::makeInstance('tx_ratings_api');
-	}
-
-	/**
 	 * Processes comments-specific markers for tt_news
 	 *
 	 * @param	array		$markerArray	Array with merkers
@@ -78,8 +62,10 @@ class tx_ratings_ttnews {
 	public function extraItemMarkerProcessor(array &$markerArray, array &$row, &$lConf, &$pObj) {
 		/* @var $pObj tx_ttnews */
 		if ($row['tx_ratings_enable']) {
-			$conf = $this->apiObj->getDefaultConfig();
+			$apiObj = t3lib_div::makeInstance('tx_ratings_api');
+			$conf = $apiObj->getDefaultConfig();
 			$conf['includeLibs'] = 'EXT:ratings/pi1/class.tx_ratings_pi1.php';
+			$conf['ref'] = 'tt_news_' . $row['uid'];
 
 			$cObj = t3lib_div::makeInstance('tslib_cObj');
 			/* @var $cObj tslib_cObj */

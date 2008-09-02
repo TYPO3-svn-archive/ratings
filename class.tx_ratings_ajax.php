@@ -50,8 +50,9 @@
 
 require_once(t3lib_extMgm::extPath('lang', 'lang.php'));
 require_once(t3lib_extMgm::extPath('ratings', 'class.tx_ratings_api.php'));
-//require_once(PATH_site . 't3lib/class.t3lib_tcemain.php');
+$_EXTKEY = 'ratings';
 require_once(t3lib_extMgm::extPath('ratings', 'ext_tables.php'));
+unset($_EXTKEY);
 require_once(t3lib_extMgm::extPath('ratings', 'tca.php'));
 
 /**
