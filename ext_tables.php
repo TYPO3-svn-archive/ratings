@@ -55,6 +55,9 @@ $TCA['tx_ratings_iplog'] = array (
 	),
 );
 
+t3lib_extMgm::allowTableOnStandardPages('tx_ratings_data');
+t3lib_extMgm::allowTableOnStandardPages('tx_ratings_iplog');
+
 unset($tx_ratings_debug_mode_disabled);
 unset($tx_ratings_sysconf);
 
