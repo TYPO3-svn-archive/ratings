@@ -286,6 +286,9 @@ class tx_ratings_api {
 			'###TEXT_RATING_TIP###' => $language->sL('LLL:EXT:ratings/locallang.xml:api_tip'),
 			'###SITE_REL_PATH###' => $siteRelPath,
 			'###VOTE_LINKS###' => $links,
+			'###RAW_COUNT###' => $rating['vote_count'],
+			'###RAW_VOTE###' => $rating['rating'],
+			'###RAW_VOTE_MAX###' => $conf['maxValue'],
 		);
 		return $this->cObj->substituteMarkerArray($subTemplate, $markers);
 	}
