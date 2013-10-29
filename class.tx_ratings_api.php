@@ -156,8 +156,7 @@ class tx_ratings_api {
 	public function isVoted($ref, array &$conf) {
 		list($rec) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('COUNT(*) AS t',
 					'tx_ratings_iplog',
-					'pid=' . intval($conf['storagePid']) .
-					' AND reference=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($ref, 'tx_ratings_iplog') .
+					' reference=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($ref, 'tx_ratings_iplog') .
 					' AND ip='. $GLOBALS['TYPO3_DB']->fullQuoteStr($this->getCurrentIp(), 'tx_ratings_iplog') .
 					$this->enableFields('tx_ratings_iplog'));
 		return ($rec['t'] > 0);
@@ -213,8 +212,7 @@ class tx_ratings_api {
 	protected function getRatingInfo($ref, array &$conf) {
 		$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('rating,vote_count',
 					'tx_ratings_data',
-					'pid=' . intval($conf['storagePid']) .
-					' AND reference=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($ref, 'tx_ratings_data') . $this->enableFields('tx_ratings_data'));
+					' reference=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($ref, 'tx_ratings_data') . $this->enableFields('tx_ratings_data'));
 		return (count($recs) ? $recs[0] : array('rating' => 0, 'vote_count' => 0));
 	}
 
