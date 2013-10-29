@@ -1,3 +1,12 @@
+2013-10-29 Simon Schmidt <sfs@marketing-factory.de>
+
+	* Displaying rating of news item on different pages gives different results
+	* Add Microformat Support for ratings
+	* Add stdWrap to reference configuration
+	* Possibility to use ratings for any plugin
+	* Release version 1.1.0
+
+
 2009-04-21  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Changed contact information
