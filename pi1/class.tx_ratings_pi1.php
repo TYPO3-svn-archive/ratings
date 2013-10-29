@@ -59,6 +59,12 @@ class tx_ratings_pi1 extends tslib_pibase {
 
 		$api = t3lib_div::makeInstance('tx_ratings_api');
 		/* @var $api tx_ratings_api */
+
+		// adds possibility to change ref and so use this plugin with other plugins and not only pages
+		if ($conf['flexibleRef']) {
+			$conf['ref'] = $this->cObj->cObjGetSingle($conf['flexibleRef'], $conf['flexibleRef.']);
+		}
+
 		$content = $api->getRatingDisplay($conf['ref'] ? $this->cObj->stdWrap($conf['ref'], $conf['ref' . '.']) : 'pages_' . $GLOBALS['TSFE']->id, $this->conf);
 
 		return $this->pi_wrapInBaseClass($content);
