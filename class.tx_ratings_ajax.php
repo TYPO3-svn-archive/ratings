@@ -24,29 +24,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
-* class.tx_ratings_ajax.php
-*
-* Comment management script.
-*
-* $Id: class.tx_ratings_ajax.php 7093 2007-10-24 12:39:55Z liels_bugs $
-*
-* @author Dmitry Dulepov <dmitry@typo3.org>
-*/
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   64: class tx_ratings_ajax
- *   75:     public function __construct()
- *  118:     public function main()
- *  130:     protected function updateRating()
- *
- * TOTAL FUNCTIONS: 3
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 require_once(t3lib_extMgm::extPath('lang', 'lang.php'));
 require_once(t3lib_extMgm::extPath('ratings', 'class.tx_ratings_api.php'));
@@ -54,13 +31,8 @@ $_EXTKEY = 'ratings';
 require_once(t3lib_extMgm::extPath('ratings', 'ext_tables.php'));
 unset($_EXTKEY);
 require_once(t3lib_extMgm::extPath('ratings', 'tca.php'));
-
 /**
  * Comment management script.
- *
- * @author Dmitry Dulepov <dmitry@typo3.org>
- * @package TYPO3
- * @subpackage tx_comments
  */
 class tx_ratings_ajax {
 	protected $ref;
@@ -71,42 +43,41 @@ class tx_ratings_ajax {
 	/**
 	 * Initializes the class
 	 *
-	 * @return	void
 	 */
 	public function __construct() {
 		$data_str = t3lib_div::_GP('data');
 		$data = unserialize(base64_decode($data_str));
-
-		$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
-		$GLOBALS['LANG']->init($data['lang'] ? $data['lang'] : 'default');
-		$GLOBALS['LANG']->includeLLFile('EXT:ratings/locallang_ajax.xml');
+		/** @var language $language */
+		$language = t3lib_div::makeInstance('language');
+		$language->init($data['lang'] ? $data['lang'] : 'default');
+		$language->includeLLFile('EXT:ratings/locallang_ajax.xml');
 
 		tslib_eidtools::connectDB();
 
 		// Sanity check
 		$this->rating = t3lib_div::_GP('rating');
 		if (!t3lib_div::testInt($this->rating)) {
-			echo $GLOBALS['LANG']->getLL('bad_rating_value');
+			echo $language->getLL('bad_rating_value');
 			exit;
 		}
 		$this->ref = t3lib_div::_GP('ref');
 		if (trim($this->ref) == '') {
-			echo $GLOBALS['LANG']->getLL('bad_ref_value');
+			echo $language->getLL('bad_ref_value');
 			exit;
 		}
 		$check = t3lib_div::_GP('check');
 		if (md5($this->ref . $this->rating . $data_str . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) != $check) {
-			echo $GLOBALS['LANG']->getLL('wrong_check_value');
+			echo $language->getLL('wrong_check_value');
 			exit;
 		}
 		$this->conf = $data['conf'];
 		if (!is_array($this->conf)) {
-			echo $GLOBALS['LANG']->getLL('bad_conf_value');
+			echo $language->getLL('bad_conf_value');
 			exit;
 		}
 		$this->pid = $data['pid'];
 		if (!t3lib_div::testInt($this->pid)) {
-			echo $GLOBALS['LANG']->getLL('bad_pid_value');
+			echo $language->getLL('bad_pid_value');
 			exit;
 		}
 	}
@@ -126,20 +97,22 @@ class tx_ratings_ajax {
 	 * @return	void
 	 */
 	protected function updateRating() {
-		$apiObj = t3lib_div::makeInstance('tx_ratings_api');
 		/* @var $apiObj tx_ratings_api */
+		$apiObj = t3lib_div::makeInstance('tx_ratings_api');
+		/** @var t3lib_DB $databaseHandle */
+		$databaseHandle = $GLOBALS['TYPO3_DB'];
 
-		if ($this->conf['disableIpCheck'] || !$apiObj->isVoted($this->ref, $this->conf)) {
+		if ($this->conf['disableIpCheck'] || !$apiObj->isVoted($this->ref)) {
 
 			// Do everything inside transaction
-			$GLOBALS['TYPO3_DB']->sql_query('START TRANSACTION');
+			$databaseHandle->sql_query('START TRANSACTION');
 			$dataWhere = 'pid=' . intval($this->conf['storagePid']) .
-						' AND reference=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->ref, 'tx_ratings_data') .
+						' AND reference=' . $databaseHandle->fullQuoteStr($this->ref, 'tx_ratings_data') .
 						$apiObj->enableFields('tx_ratings_data');
-			list($row) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('COUNT(*) AS t',
+			list($row) = $databaseHandle->exec_SELECTgetRows('COUNT(*) AS t',
 					'tx_ratings_data', $dataWhere);
 			if ($row['t'] > 0) {
-				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_ratings_data', $dataWhere,
+				$databaseHandle->exec_UPDATEquery('tx_ratings_data', $dataWhere,
 					array(
 						'vote_count' => 'vote_count+1',
 						'rating' => 'rating+' . intval($this->rating),
@@ -147,7 +120,7 @@ class tx_ratings_ajax {
 					), 'vote_count,rating');
 			}
 			else {
-				$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_ratings_data',
+				$databaseHandle->exec_INSERTquery('tx_ratings_data',
 					array(
 						'pid' => $this->conf['storagePid'],
 						'crdate' => time(),
@@ -168,7 +141,7 @@ class tx_ratings_ajax {
 					t3lib_div::callUserFunction($userFunc, $params, $this);
 				}
 			}
-			$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_ratings_iplog',
+			$databaseHandle->exec_INSERTquery('tx_ratings_iplog',
 				array(
 					'pid' => $this->conf['storagePid'],
 					'crdate' => time(),
@@ -176,7 +149,7 @@ class tx_ratings_ajax {
 					'reference' => $this->ref,
 					'ip' => $apiObj->getCurrentIp(),
 				));
-			$GLOBALS['TYPO3_DB']->sql_query('COMMIT');
+			$databaseHandle->sql_query('COMMIT');
 		}
 
 		// Get rating display
@@ -185,8 +158,9 @@ class tx_ratings_ajax {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/ratings/class.tx_ratings_ajax.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/ratings/class.tx_ratings_ajax.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/ratings/class.tx_ratings_ajax.php']) {
+	/** @noinspection PhpIncludeInspection */
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/ratings/class.tx_ratings_ajax.php']);
 }
 
 // Make instance:

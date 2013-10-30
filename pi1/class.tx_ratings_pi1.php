@@ -22,12 +22,9 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(PATH_tslib.'class.tslib_pibase.php');
 
 define('TX_RATINGS_MIN', 0);
 define('TX_RATINGS_MAX', 100);
-
-require_once(t3lib_extMgm::extPath('ratings', 'class.tx_ratings_api.php'));
 
 /**
  * Plugin 'Ratings' for the 'ratings' extension.
@@ -45,9 +42,9 @@ class tx_ratings_pi1 extends tslib_pibase {
 	/**
 	 * The main method of the PlugIn
 	 *
-	 * @param	string		$content: The PlugIn content
-	 * @param	array		$conf: The PlugIn configuration
-	 * @return	The		content that is displayed on the website
+	 * @param string $content: The PlugIn content
+	 * @param array $conf: The PlugIn configuration
+	 * @return string The content that is displayed on the website
 	 */
 	function main($content, $conf) {
 		$this->mergeConfiguration($conf);
@@ -57,15 +54,15 @@ class tx_ratings_pi1 extends tslib_pibase {
 			return $this->pi_wrapInBaseClass($this->pi_getLL('no_ts_template'));
 		}
 
-		$api = t3lib_div::makeInstance('tx_ratings_api');
 		/* @var $api tx_ratings_api */
+		$api = t3lib_div::makeInstance('tx_ratings_api');
 
 		// adds possibility to change ref and so use this plugin with other plugins and not only pages
 		if ($conf['flexibleRef']) {
 			$conf['ref'] = $this->cObj->cObjGetSingle($conf['flexibleRef'], $conf['flexibleRef.']);
 		}
 
-		$content = $api->getRatingDisplay($conf['ref'] ? $this->cObj->stdWrap($conf['ref'], $conf['ref' . '.']) : 'pages_' . $GLOBALS['TSFE']->id, $this->conf);
+		$content.= $api->getRatingDisplay($conf['ref'] ? $this->cObj->stdWrap($conf['ref'], $conf['ref' . '.']) : 'pages_' . $GLOBALS['TSFE']->id, $this->conf);
 
 		return $this->pi_wrapInBaseClass($content);
 	}
@@ -96,6 +93,7 @@ class tx_ratings_pi1 extends tslib_pibase {
 	 * @return	void
 	 */
 	function fetchConfigValue($param) {
+		$section = '';
 		if (strchr($param, '.')) {
 			list($section, $param) = explode('.', $param, 2);
 		}
@@ -111,8 +109,9 @@ class tx_ratings_pi1 extends tslib_pibase {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/ratings/pi1/class.tx_ratings_pi1.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/ratings/pi1/class.tx_ratings_pi1.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/ratings/pi1/class.tx_ratings_pi1.php'])	{
+	/** @noinspection PhpIncludeInspection */
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/ratings/pi1/class.tx_ratings_pi1.php']);
 }
 
 ?>

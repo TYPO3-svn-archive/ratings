@@ -22,11 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
-require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
-
-
-
 /**
  * Module extension (addition to function menu) 'Ratings' for the 'ratings' extension.
  *
@@ -36,44 +31,45 @@ require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
  */
 class tx_ratings_modfunc1 extends t3lib_extobjbase {
 
-					/**
-					 * Returns the module menu
-					 *
-					 * @return	Array with menuitems
-					 */
-					function modMenu()	{
-						global $LANG;
+	/**
+	 * Returns the module menu
+	 *
+	 * @return	Array with menuitems
+	 */
+	function modMenu() {
 
-						return Array (
-							"tx_ratings_modfunc1_check" => "",
-						);
-					}
+		return array (
+			"tx_ratings_modfunc1_check" => "",
+		);
+	}
 
-					/**
-					 * Main method of the module
-					 *
-					 * @return	HTML
-					 */
-					function main()	{
-							// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
-						global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
+	/**
+	 * Main method of the module
+	 *
+	 * @return	string
+	 */
+	function main() {
+		$theOutput = '';
+		/** @var language $language */
+		$language = $GLOBALS['LANG'];
 
-						$theOutput.=$this->pObj->doc->spacer(5);
-						$theOutput.=$this->pObj->doc->section($LANG->getLL("title"),"Dummy content here...",0,1);
+		$theOutput.= $this->pObj->doc->spacer(5);
+		$theOutput.= $this->pObj->doc->section($language->getLL("title"),"Dummy content here...",0,1);
 
-						$menu=array();
-						$menu[]=t3lib_BEfunc::getFuncCheck($this->wizard->pObj->id,"SET[tx_ratings_modfunc1_check]",$this->wizard->pObj->MOD_SETTINGS["tx_ratings_modfunc1_check"]).$LANG->getLL("checklabel");
-						$theOutput.=$this->pObj->doc->spacer(5);
-						$theOutput.=$this->pObj->doc->section("Menu",implode(" - ",$menu),0,1);
+		$menu = array();
+		$menu[] = t3lib_BEfunc::getFuncCheck($this->wizard->pObj->id,"SET[tx_ratings_modfunc1_check]",$this->wizard->pObj->MOD_SETTINGS["tx_ratings_modfunc1_check"]).$language->getLL("checklabel");
+		$theOutput.= $this->pObj->doc->spacer(5);
+		$theOutput.= $this->pObj->doc->section("Menu",implode(" - ",$menu),0,1);
 
-						return $theOutput;
-					}
-				}
+		return $theOutput;
+	}
+}
 
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/ratings/modfunc1/class.tx_ratings_modfunc1.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/ratings/modfunc1/class.tx_ratings_modfunc1.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/ratings/modfunc1/class.tx_ratings_modfunc1.php'])	{
+	/** @noinspection PhpIncludeInspection */
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/ratings/modfunc1/class.tx_ratings_modfunc1.php']);
 }
 
 ?>

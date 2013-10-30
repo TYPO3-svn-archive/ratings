@@ -4,8 +4,8 @@ if (!defined ('TYPO3_MODE')) die('Access denied.');
 $tx_ratings_sysconf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['ratings']);
 $tx_ratings_debug_mode_disabled = !intval($tx_ratings_sysconf['debugMode']);
 
-$TCA['tx_ratings_data'] = array (
-	'ctrl' => $TCA['tx_ratings_data']['ctrl'],
+$GLOBALS['TCA']['tx_ratings_data'] = array (
+	'ctrl' => $GLOBALS['TCA']['tx_ratings_data']['ctrl'],
 	'columns' => array (
 		'reference' => array (
 			'exclude' => 1,
@@ -23,14 +23,14 @@ $TCA['tx_ratings_data'] = array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:ratings/locallang_db.xml:tx_ratings_data.rating',
 			'config' => array (
-				'type'     => 'input',
-				'size'     => '4',
-				'max'      => '4',
-				'eval'     => 'int',
+				'type' => 'input',
+				'size' => '4',
+				'max' => '4',
+				'eval' => 'int',
 				'checkbox' => '0',
-				'range'    => array (
+				'range' => array (
 					'upper' => '1000',
-					'lower' => '10'
+					'lower' => '1'
 				),
 				'default' => 0
 			)
@@ -39,14 +39,14 @@ $TCA['tx_ratings_data'] = array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:ratings/locallang_db.xml:tx_ratings_data.vote_count',
 			'config' => array (
-				'type'     => 'input',
-				'size'     => '4',
-				'max'      => '4',
-				'eval'     => 'int',
+				'type' => 'input',
+				'size' => '4',
+				'max' => '4',
+				'eval' => 'int',
 				'checkbox' => '0',
-				'range'    => array (
+				'range' => array (
 					'upper' => '1000',
-					'lower' => '10'
+					'lower' => '1'
 				),
 				'default' => 0
 			)
@@ -60,8 +60,8 @@ $TCA['tx_ratings_data'] = array (
 //	)
 );
 
-$TCA['tx_ratings_iplog'] = array(
-	'ctrl' => $TCA['tx_ratings_iplog']['ctrl'],
+$GLOBALS['TCA']['tx_ratings_iplog'] = array(
+	'ctrl' => $GLOBALS['TCA']['tx_ratings_iplog']['ctrl'],
 	'columns' => array (
 		'reference' => array (
 			'exclude' => 1,
@@ -79,10 +79,10 @@ $TCA['tx_ratings_iplog'] = array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:ratings/locallang_db.xml:tx_ratings_iplog.crdate',
 			'config' => array (
-				'type'     => 'input',
-				'size'     => '22',
-				'max'      => '16',
-				'eval'     => 'datetime',
+				'type' => 'input',
+				'size' => '22',
+				'max' => '16',
+				'eval' => 'datetime',
 				'readOnly' => $tx_ratings_debug_mode_disabled,
 			)
 		),
@@ -90,10 +90,10 @@ $TCA['tx_ratings_iplog'] = array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:ratings/locallang_db.xml:tx_ratings_iplog.ip',
 			'config' => array (
-				'type'     => 'input',
-				'size'     => '22',
-				'max'      => '16',
-				'eval'     => 'trim',
+				'type' => 'input',
+				'size' => '22',
+				'max' => '16',
+				'eval' => 'trim',
 			)
 		),
 	),

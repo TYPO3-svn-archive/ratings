@@ -21,26 +21,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * Hooks to tt_news.
- *
- * $Id: class.tx_ratings_ttnews.php 8066 2008-01-28 12:38:14Z liels_bugs $
- */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   52: class tx_ratings_ttnews
- *   60:     public function __construct()
- *   73:     function extraItemMarkerProcessor($markerArray, $row, $lConf, &$pObj)
- *
- * TOTAL FUNCTIONS: 2
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
-
-require_once(t3lib_extMgm::extPath('ratings', 'class.tx_ratings_api.php'));
 
 /**
  * This clas provides hook to tt_news to add extra markers.
@@ -86,8 +66,9 @@ class tx_ratings_ttnews {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/ratings/class.tx_ratings_ttnews.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/ratings/class.tx_ratings_ttnews.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/ratings/class.tx_ratings_ttnews.php']) {
+	/** @noinspection PhpIncludeInspection */
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/ratings/class.tx_ratings_ttnews.php']);
 }
 
 ?>

@@ -14,5 +14,14 @@
 			<label index="api_already_rated">You have rated this item already.</label>
 			<label index="api_tip">Click the rating bar to rate this item.</label>
 		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="pi1_title">Bewertungen</label>
+			<label index="pi1_plus_wiz_description">Bewertungssystem mit Sternen (auf AJAX basierend)</label>
+			<label index="api_rating">%1$.1f von %2$d Sternen. %3$d Bewertung(en).</label>
+			<label index="api_not_rated">Aktuell hat noch niemand eine Bwertung abgegeben.</label>
+			<label index="api_submitting">Ihre Bewertung wurde hinzugefügt...</label>
+			<label index="api_already_rated">Es wurde bereits eine Bwertung abgegeben.</label>
+			<label index="api_tip">Zum Bewerten bitte auf den gewünschten Stern drücken.</label>
+		</languageKey>
 	</data>
 </T3locallang>

@@ -11,6 +11,10 @@ plugin.tx_ratings_pi1.mode = auto
 # cat=plugin.tx_ratings_pi1/setup; type=boolean; label=Disable IP checks;If checked, disables IP checks. This will let users to vote many times on the same item. Useful for debugging.
 plugin.tx_ratings_pi1.disableIpCheck = 0
 # cat=plugin.tx_ratings_pi1/file; type=string; label=Template file
-plugin.tx_ratings_pi1.templateFile = EXT:ratings/res/ratings.html
+plugin.tx_ratings_pi1.templateFile = EXT:ratings/res/ratingsMicrodata.html
 # cat=plugin.tx_ratings_pi1/file; type=string; label=Additional CSS file
 plugin.tx_ratings_pi1.additionalCSS =
+# cat=plugin.tx_ratings_pi1/file; type=int; label=Additional CSS Flag
+plugin.tx_ratings_pi1.showAdditionalCSS = 0
+# cat=plugin.tx_ratings_pi1/file; type=string; label=the name of the page object
+plugin.tx_ratings_pi1.pageObjectName = page

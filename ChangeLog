@@ -1,9 +1,15 @@
 2013-10-29 Simon Schmidt <sfs@marketing-factory.de>
 
-	* Displaying rating of news item on different pages gives different results
-	* Add Microformat Support for ratings
-	* Add stdWrap to reference configuration
-	* Possibility to use ratings for any plugin
+	* extension cleanup
+	* bugfix "Changing tx_ratings_data record leads to rating and vote_count of 10" (thanks to Rik Willems)
+	* Release version 1.1.1
+
+2013-10-29 Simon Schmidt <sfs@marketing-factory.de>
+
+	* Displaying rating of news item on different pages gives different results (thanks to Lina Wolf)
+	* Add Microdata Support for ratings (thanks to Lina Wolf)
+	* Add stdWrap to reference configuration (thanks to Rik Willems)
+	* Possibility to use ratings for any plugin (thanks to Dimitri Koenig)
 	* Release version 1.1.0
 
 
