@@ -51,7 +51,6 @@ class tx_ratings_api {
 	 */
 	public function __construct() {
 		$this->cObj = t3lib_div::makeInstance('tslib_cObj');
-		$this->cObj->start('', '');
 		$this->databaseHandle = $GLOBALS['TYPO3_DB'];
 	}
 
